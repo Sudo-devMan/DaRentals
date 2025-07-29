@@ -3,3 +3,4 @@ requests
 reportlab
 twilio
 africastalking
+python-decouple
