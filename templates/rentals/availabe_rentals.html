@@ -1,0 +1,95 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Available rentals {% endblock %}
+
+{% block body %}
+
+    <h1 class="text-primary text-center blue-underline mt-5 mb-4">Available rentals</h1>
+
+    <form method="post" style="transform: scale(1.2);" action="{% url 'search' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="search"></label>
+            <input class="search-input mb-4" type="text" name="search-rentals" placeholder="search..place, price, etc.">
+        </div>
+    </form>
+
+
+
+ <!--    <div id="rentalResults">
+        {% if search_query %}
+            <h1 class="text-center text-primary m-5">
+                Search Results for <span class="text-success">{{ search_query }}</span>
+            </h1>
+            {% include 'partials/rental_cards.html' %}
+        {% else %}
+            <div class="text-center fs-5 mt-4">
+                Start typing to search rentals by address, price, or username...
+            </div>
+        {% endif %}
+    </div> -->
+
+<!-- IGNORE THIS UGLY JAVASCRIPT THAT IS ERRORING -->
+    <script>
+        const input = document.getElementById('searchInput');
+        const results = document.getElementById('rentalResults');
+
+        input.addEventListener('keyup', function () {
+            const query = input.value;
+
+            fetch(`/live-search/?search=${encodeURIComponent(query)}`)
+                .then(response => response.text())
+                .then(html => {
+                    results.innerHTML = html;
+                });
+        });
+    </script>
+
+    <div class="rentals-container container mt-5">
+        {% if rentals %}
+            <div class="row">
+                {% for rental in rentals %}
+                    <div class="col-12 col-sm-6 col-md-4 mb-4">
+                        <div class="card bg-dark text-light shadow-lg h-100 rounded-4 overflow-hidden">
+                            <a href="{{rental.image.url}}"><img src="{{ rental.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="rental image" /></a>
+                            <div class="card-body">
+                                <h4 class="card-title text-white fw-bold">{{ rental.address }}</h4>
+                                <p class="card-text text-light opacity-75" style="font-size: .9rem; color: #afafaf">{{ rental.details|truncatewords:15 }}<a href="{% url 'rental' rental.id %}" style="font-weight: bold">View more</a></p>
+                            </div>
+                            <div class="card-body border-top border-secondary d-flex justify-content-between align-items-center">
+                                <p class="fs-4 text-success mb-0">R{{ rental.price }} pm</p>
+                                <a href="{% url 'rental' rental.id %}" class="btn btn-outline-secondary btn-sm">See</a>
+                            </div>
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <a href="{% url 'my-profile' rental.user.username %}" class="text-decoration-none text-light d-flex align-items-center gap-2">
+                                    <img src="{{ rental.user.profile.image.url }}" class="rounded-circle" style="width: 2em;" alt="Profile picture" />
+                                    <span>{{ rental.user.username }}</span>
+                                </a>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="profile_id" value="{{ rental.user.profile.id }}" />
+                                    {% if profile in rental.user.profile.followed_by.all %}
+                                        <button class="btn btn-success w-100" name="follow" value="unfollow" type="submit">Unfollow</button>
+                                    {% else %}
+                                        <button class="btn btn-outline-primary w-100" name="follow" value="follow" type="submit">Follow</button>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center text-light my-5">
+                <h2 class="mb-3">Eishh... nothing here yet</h2>
+                <p class="fs-5">
+                    No <span class="text-danger">rooms</span>, <span class="text-danger">apartments</span>, or <span class="text-danger">business properties</span> available. Or we did <span class="text-danger">not find</span> what you searched for. ({{search_query}})<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </p>
+            </div>
+            <br><br><br><br><br><br><br><br><br><br>
+        {% endif %}
+    </div>
+
+    <br>
+    {% endblock %}

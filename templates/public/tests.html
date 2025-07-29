@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Test input file</title>
+	<style>
+		.input-file{
+			margin: 4em;
+			background-color: #9cdffd;
+			width: 5em;
+			height: 5em;
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			justify-self: center;
+			transform: translateY(199%) translateX(100%) scale(.6);
+			border-radius: 50%;
+			text-align: center;
+		}
+		input[type='file']{
+			transform: scale(3);
+			opacity: 0;
+			position: relative;
+		}
+		.profile{
+			width: 15em;
+			height: 15em;
+			background-color: blue;
+			border-radius: 50%;
+		}
+	</style>
+</head>
+<body>
+	<div class="profile">
+		<div class="input-file">
+			<center><p style="z-index: 1; text-align: center;">+</p></center>
+			<input type="file" name="test_file">
+		</div>
+	</div>
+</body>
+</html>

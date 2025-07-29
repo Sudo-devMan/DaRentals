@@ -1,0 +1,16 @@
+
+
+{% extends 'base.html' %}
+{% block title %} Are you sure you wanna logout?{% endblock %}
+
+{% block body %}
+    <h1 class="text-center m-5 text-primary">Are you sure you want to <span class="text-danger">logout</span>?</h1>
+    
+    <center>
+        <a href="{% url 'home' %}" class="btn btn-outline-primary m-2">No</a>
+        <a href="{% url 'logout' %}" class="btn btn-outline-danger m-2">Yes</a>
+    </center>
+
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+{% endblock %}

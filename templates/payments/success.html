@@ -1,0 +1,17 @@
+
+{% extends 'base.html' %}
+{% block title %} Rental Payment Successful! {% endblock %}
+
+{% block body %}
+<h1 class="blue-underline m-3 text-center text-success">Payment Successful!</h1>
+
+<p class="text-light fs-4 text-center">
+    Your payment was processed successfully.<br>
+    You can download your receipt from <a href="{% url 'my-payments' %}">My Payments</a>.
+</p>
+<br><br><br><br>
+<p class="text-warning fs-5 text-center">
+    <strong>NOTE:</strong> Please show the rental owner your receipt when you move in. It is your proof of payment.
+</p>
+<br><br><br><br><br>
+{% endblock %}

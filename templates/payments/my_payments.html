@@ -1,0 +1,44 @@
+
+{% extends 'base.html' %}
+{% block title %} My payments {% endblock %}
+
+{% block body %}
+<h1 class="blue-underline m-3 text-center text-success">Payments History</h1>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Rental</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Receipt</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if payments %}
+            {% for payment in payments %}
+                <tr class="bg-secondary">
+                    <td>{{ payment.rental.address }}</td>
+                    <td>R {{ payment.rental.price }}</td>
+                    {% if payment.status %}
+                        <td>SUCCESS</td>
+                    {% else %}
+                        <td>UNSUCCESSFUL</td>
+                    {% endif %}
+                    <td>{{ payment.date|date:"M d, Y H:i" }}</td>
+                    <td>
+                        {% if payment.status and payment.receipt %}
+                            <a href="{% url 'download' payment.reference %}" target="_blank">Download receipt</a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr><td colspan="5" class="text-center">No payments found. because you ain't made any</td></tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

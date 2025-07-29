@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Post a Rental {% endblock %}
+
+{% block body %}
+<h1 class="blue-underline text-center mt-4 display-5 fw-bold text-light">Post A Rental</h1>
+
+{% for msg in messages %}
+    <p class="text-danger text-center mt-3 fw-semibold">{{ msg }}</p>
+{% endfor %}
+
+<form class="a-form bg-dark rounded-4 shadow-lg p-4 mt-4 mx-auto" style="max-width: 700px;" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label class="form-label text-light fw-bold">Rental Image <span class="opacity-75">(Max 1 image)</span></label>
+        <input required type="file" name="image" class="form-control bg-dark text-light border-light" accept="image/*">
+        <small class="form-text text-success mt-2 d-block">Press "Choose file" to upload a picture tenants will love.</small>
+    </div>
+
+    <div class="mb-4 input-group">
+        <span class="input-group-text bg-dark border-light">
+            <img src="{% static 'icons/home.png' %}" alt="Home Icon" style="width: 1.2rem;">
+        </span>
+        <textarea required name="place" type="text" class="form-control input bg-dark text-light border-light" placeholder="Enter address, (eg. province, city, town, street, howse number) you can provide in some meta details such as 'near MASTEC college'" rows="5"></textarea>
+    </div>
+
+    <div class="mb-4">
+        <textarea required name="details" placeholder="Type in some details to attract tenants, rules, conditions, etc."
+                  class="form-control input bg-dark text-light border-light" rows="5"></textarea>
+    </div>
+
+    <div class="mb-4 input-group">
+        <span class="input-group-text bg-dark text-light border-light">R</span>
+        <input required type="text" name="price" class="form-control input bg-dark text-light border-light" placeholder="How much per month?">
+    </div>
+
+    <div>
+        {% if user.profile.subaccount_code %}
+            <button type="submit" class="btn btn-success fs-5 w-100 d-flex align-items-center justify-content-center gap-2">
+                Post Rental <img src="{% static 'icons/upload.png' %}" alt="Upload Icon" style="width: 1.2rem;">
+            </button>
+        {% else %}
+            <a href="{% url 'edit-profile' user.username %}" class="btn btn-danger fs-5 w-100 d-flex align-items-center justify-content-center gap-2">
+                 Edit your profile and add bank details to continue
+            </a>
+        {% endif %}
+    </div>
+</form>
+
+<!-- <p class="text-center">{{ user.profile.subaccount_code }}</p> -->
+
+<br><br><br>
+{% endblock %}

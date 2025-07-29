@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Login {% endblock %}
+
+{% block header %} <h1> </h1> {% endblock %}
+
+{% block body %}
+    <center>
+        <h1 class='display-1 m-3 text-primary'>DaRentals</h1>
+        <h1 class="blue-underline">Login</h1>
+        {% for msg in messages %}
+            <p class="text-danger">{{msg}}!</p>
+        {% endfor %}
+    </center>
+    <form method="post" class="a-form">
+        {% csrf_token %}
+        <input type="text" name="username" class="form-control m-2 input" placeholder="Username...">
+        <input type="password" name="password" class="form-control m-2 input" placeholder="Password...">
+        
+        <input type="submit" value="Login" class="submit btn btn-primary col-12 m-2">
+        <a href="{% url 'sign-up' %}" class='text-center'>I don't have an account</a>
+    </form>
+
+    <br><br><br><br><br><br><br><br><br><br>
+{% endblock %}

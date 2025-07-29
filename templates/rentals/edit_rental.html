@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{ rental.user.username }} | Edit Rental {% endblock %}
+
+{% block body %}
+
+{% if l_user == rental.user.username %}
+    <h1 class="blue-underline text-center">
+        <i class="fas fa-user-edit me-2 text-primary"></i>{{ rental.user.username }}
+        <span class="text-success">: Edit Rental</span>
+    </h1>
+
+    <center>
+        <img src="{{ rental.image.url }}"
+             alt="Rental Image"
+             style="width: 20em; height: 20em; margin: 0.75em; border-radius: 0.5em; object-fit: cover;"
+             class="shadow-sm">
+    </center>
+
+    {% for msg in messages %}
+        <p class="text-success text-center mt-3 fw-semibold">{{ msg }}</p>
+    {% endfor %}
+
+    <form class="a-form bg-dark rounded-4 shadow-lg p-4 mt-4 mx-auto" 
+          style="max-width: 700px;" 
+          enctype="multipart/form-data" 
+          method="post">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <label class="form-label text-light fw-bold">
+                <i class="fas fa-image me-2 text-info"></i> Rental Image
+                <span class="opacity-75">(Max 1 image)</span>
+            </label>
+            <input type="file" name="image" class="form-control bg-dark text-light border-light" accept="image/*">
+            <small class="form-text text-success mt-2 d-block">
+                Press "Choose file" to upload a picture tenants will love.
+            </small>
+        </div>
+
+        <div class="mb-4 input-group">
+            <span class="input-group-text bg-dark border-light text-light">
+                <i class="fas fa-map-marker-alt"></i>
+            </span>
+            <input value="{{ rental.address }}" required name="place" type="text" 
+                   class="form-control bg-dark text-light border-light" 
+                   placeholder="Enter address">
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label text-light fw-bold">
+                <i class="fas fa-align-left me-2 text-warning"></i> Rental Details
+            </label>
+            <textarea required name="details"
+                      class="form-control bg-dark text-light border-light"
+                      rows="5"
+                      placeholder="Type in some details to attract tenants, rules, conditions, etc.">{{ rental.details }}</textarea>
+        </div>
+
+        <div class="mb-4 input-group">
+            <span class="input-group-text bg-dark text-light border-light">
+                <i class="fas fa-random"></i> R
+            </span>
+            <input value="{{ rental.price }}" required type="text" name="price"
+                   class="form-control bg-dark text-light border-light"
+                   placeholder="How much per month?">
+        </div>
+
+        <div class="form-check form-switch text-light mb-4">
+            <input class="form-check-input bg-success border border-light"
+                   type="checkbox"
+                   name="occupied"
+                   id="occupiedSwitch"
+                   {% if rental.is_occupied %}checked{% endif %}>
+            <label class="form-check-label fw-semibold" for="occupiedSwitch">
+                Occupied
+            </label>
+        </div>
+
+        <div>
+            <button type="submit"
+                    class="btn btn-success fs-5 w-100 d-flex align-items-center justify-content-center gap-2">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <a href="{% url 'rental' rental.id %}" 
+                    class="btn btn-outline-light mt-1 fs-5 w-100 d-flex align-items-center justify-content-center gap-2">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </form>
+
+    <br><br><br>
+
+{% else %}
+    <div class="text-center py-5">
+        <h1 class="text-danger fw-bold">
+            <i class="fas fa-ban me-2"></i> YOU DO NOT HAVE PERMISSION TO ACCESS THIS PAGE!!
+        </h1>
+        <a href="{% url 'home' %}" class="btn btn-danger mt-4">
+            <i class="fas fa-arrow-left me-2"></i> GET OUT!
+        </a>
+    </div>
+    <br><br><br><br><br>
+{% endif %}
+
+<br><br><br><br>
+
+{% endblock %}

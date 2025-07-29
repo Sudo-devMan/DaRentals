@@ -1,0 +1,88 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Edit my profile {% endblock %}
+
+{% block body %}
+
+{% if wegood %}
+    <h1 class="blue-underline text-center">Edit your profile</h1>
+        <center><div class="profile-picture">
+            <a href="{{profile.image.url}}"><img class="m-3 rounded-4" style='width: 15em' src="{{profile.image.url}}" alt="profile picture"></a>
+        </div></center>
+
+
+
+    <form class="a-form" method="POST" enctype="multipart/form-data">
+
+        {% for msg in messages %}
+            <p class="text-success m-3 text-center">{{msg}}</p>
+        {% endfor %}
+
+        {% csrf_token %}
+        <div class="form-group m-2">
+            <label for="profile_image">Change profile picture: <span class="opacity-25">(press Choose file to choose a new profile picture)</span></label>
+            <input class="input form-control" type="file" name="profile_image">
+        </div>
+
+        <div class="form-group m-2">
+            <label for="username">Your username:</label>
+            <input value="{{profile.user.username}}" class="input form-control" type="text" name="username" placeholder="username...">
+        </div>
+
+        <div class="form-group m-2">
+            <label for="address">Your address:</label>
+            <textarea name="address" class="input form-control" placeholder="Address: Country, Province, City, Town/Suburb, etc.">{{profile.address}}</textarea>
+        </div>
+
+        <div class="form-group m-2">
+            <label for="phone_number">Your phone number (IT'S A MUST):</label>
+            <input required value="{{profile.phone_number}}" class="input form-control" type="number" name="phone_number" placeholder="phone number...">
+        </div>
+
+        {% if profile.bank_code == "NONE" %}
+            <p class="m-2 text-center text-warning"><span class="text-danger mx-1">NOTE:</span>If you want to share your rentals please enter your account number and select your bank so that you can receive the rent money</p>
+        {% endif %}
+
+        <div class="form-group m-2">
+            <label for="phone_number">Your BANK account number for payments:</label>
+            <input value="{{profile.account_number}}" class="input form-control" type="number" name="account_number" placeholder="account number">
+        </div>
+
+        <style>
+            select option{
+                background-color: #212529;
+                color: #fff;
+            }
+        </style>
+
+        <div class="form-group m-2">
+            <label for="bank_code">Your BANK for payments:</label>
+            <select class="form-control input" name="bank_code">
+                {% if profile.bank_code == "NONE" %}
+                    <option value="{{profile.bank_code}}">Select your bank (click here)</option>
+                {% endif %}
+                <option value="632005" {% if profile.bank_code == "632005" %}selected{% endif %}>ABSA</option>
+                <option value="470010" {% if profile.bank_code == "470010" %}selected{% endif %}>Capitec Bank</option>
+                <option value="250655" {% if profile.bank_code == "250655" %}selected{% endif %}>First National Bank (FNB)</option>
+                <option value="051001" {% if profile.bank_code == "051001" %}selected{% endif %}>Standard Bank</option>
+                <option value="198765" {% if profile.bank_code == "198765" %}selected{% endif %}>Nedbank</option>
+                <option value="678910" {% if profile.bank_code == "678910" %}selected{% endif %}>TymeBank</option>
+            </select>
+        </div>
+
+        <button class="m-2 btn btn-outline-primary">Save changes</button>
+
+        
+    </form>
+    <center>
+    <a href="{% url 'u_sure_u_wanna_delete_your_account' profile.user.id %}" ><button class="m-2 btn btn-outline-danger">Delete account <span class="opacity-50"><img src="{% static 'icons/delete.png' %}"></span></button></a> </center>
+
+{% else %}
+    {% include 'partials/uyaphapha.html' %}
+{% endif %}
+
+    <br><br>
+{% endblock %}
+
+{% block footer %}{% endblock %}

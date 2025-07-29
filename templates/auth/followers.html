@@ -1,0 +1,60 @@
+
+{% extends 'base.html' %}
+{% block title %} Followers {% endblock %}
+
+{% block body %}
+	<h1 class="text-center m-3 blue-underline">Followers</h1>
+{% if followers %}
+    <div class="d-flex flex-wrap justify-content-center gap-4">
+    {% for follower in followers %}
+    <div class="card bg-dark-gradient text-light landlord-card shadow-sm p-3 hovermation" style="max-width: 440px;">
+            <a href="{% url 'my-profile' follower.user.username %}" class="text-decoration-none text-light">
+                <div class="d-flex align-items-center mb-3">
+                    <img
+                        src="{{follower.image.url}}"
+                        alt="profile"
+                        class="rounded-circle me-3"
+                        style="width: 80px; height: 80px; object-fit: cover"
+                    />
+                    <div>
+                        <h5 class="mb-1">{{ follower.user.username }}</h5>
+                        <p class="opacity-75 mb-0">{{ follower.address }}</p>
+                    </div>
+                </div>
+            </a>
+
+            <div class="d-flex justify-content-between text-center border-top pt-3">
+                <div style="margin-right: .83em;">
+                    <p class="mb-0 fw-bold">{{ follower.followed_by.count }}</p>
+                    <small class="opacity-50 text-light">Followers</small>
+                </div>
+                <div style="margin-right: .83em;">
+                    <p class="mb-0 fw-bold">{{ follower.user.rental_set.count }}</p>
+                    <small class="opacity-50">Rentals</small>
+                </div>
+                <div>
+                    <form method="post" action="{% url 'people-with-rooms' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="profile_id" value="{{ follower.id }}">
+                        {% if the_user.profile in follower.user.profile.follows.all %}
+                            <button style="width: 8em" class="mb-3 btn btn-success" name="follow" value="unfollow" type="submit">Unfollow</button>
+                        {% else %}
+                            <button style="width: 8em" class="mb-3 btn btn-outline-primary" name="follow" value="follow" type="submit">Follow</button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+	<br><br><br><br><br><br><br><br><br>
+    <h1 class="text-center text-light">Eish.. <span class="text-warning">no one</span> is following you</h1>
+    <br />
+    <h3 class="text-center text-light">
+        It is probably because you have not posted any rentals
+    </h3>
+    <br><br><br><br><br><br><br><br><br><br>
+{% endif %}
+
+{% endblock %}

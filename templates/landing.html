@@ -1,0 +1,43 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Welcome {% endblock %}
+
+{% block header %} <p></p> {% endblock %}
+
+{% block body %}
+    <h1 class="text-primary text-center display-1">DaRentals</h1>
+
+    <center>
+        <img style="width: 20em" src="{% static 'imgs/rental-icon.png' %}" alt="">
+    </center>
+    
+    <p class=" fs-3 text-center p-1">Are you looking for a <span class="text-success fs-2">room</span>? an <span class="text-success fs-2">apartment</span>? <br> or <span class="text-success fs-2">business property</span> to rent? <span class="text-primary">DaRentals</span> got you covered!</p>
+
+
+    <center>
+        <a href="{% url 'sign-up' %}" class="btn btn-success btn-lg m-3">Get started</a>
+    </center>
+
+    <div>
+        <h1 class="text-primary text-center m-3">How does it work?</h1>
+        <center>
+            <p>There are <span class="text-primary">rooms</span> to rent</p>
+            <p>You can <span class="text-primary">rent out</span> your own rooms</p>
+            <p>You can <span class="text-primary">rent out</span> your own apartments</p>
+            <p>You can <span class="text-primary">rent out</span> your own Garage?</p>
+            <p>You can <span class="text-primary">rent out</span> your own business property/properties</p>
+        </center>
+
+        <h2 class="text-primary text-center m-4">So what are you waiting for? <a href="{% url 'sign-up' %}">Get started</a>! </h2>
+    </div>
+    
+    <style>
+        .ad{
+            background-color: rgb(28, 28, 48);
+        }
+    </style>
+
+<br><br>
+
+{% endblock %}

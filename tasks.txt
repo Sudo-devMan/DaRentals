@@ -1,0 +1,16 @@
+
+								TO DO LIST
+
+
+					*1. Get the rentals inline display in all pages [DONE]
+					*2. Make the landlords page functional [DONE]
+					*3. Add a delete account function [DONE]
+					*4. Add a payment page linked to Rent, and Interested buttons [DONE]
+					*5. Configure search to redirect to a new page that shows filters [DONE]
+					*6. Look up how you can edit the profile and user models simultaneously [DONE]
+					*7. Add icons imgs instead of the bi classes [DONE]
+					8. Thoroughly test the payments in test mode and get sms api
+					*9. Polish rendal detail page [DONE]
+					*10. Create a receipt for every payment as pdf and add it to the payment model and save the model payment
+					11. Create darentals@gmail.com
+

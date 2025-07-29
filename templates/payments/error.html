@@ -1,0 +1,17 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Payment Error {% endblock %}
+
+{% block body %}
+<h1 class="blue-underline text-center">Payment Error</h1>
+<p class="text-danger text-center m-4">Oops! Something went wrong with your payment. Please contact <a href="#">support</a> if this keeps happening.</p>
+
+{% if message %}
+    <p class="text-center">{{ message }}</p>
+{% endif %}
+
+<a href="{% url 'home' %}" class="btn btn-outline-danger m-3 d-block mx-auto" style="width: fit-content;">Return Home</a>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}

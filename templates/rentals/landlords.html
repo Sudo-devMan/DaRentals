@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} People with rooms {% endblock %}
+
+{% block body %}
+<h1 class="blue-underline text-center">Landlords</h1>
+
+<form method="post" style="transform: scale(1.2);" action="{% url 'search' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="search"></label>
+        <input class="search-input mb-4" type="text" name="search-profiles" placeholder="search..name, address">
+    </div>
+</form>
+
+{% if with_rooms %}
+    <div class="d-flex flex-wrap justify-content-center gap-4">
+    {% for landlord in with_rooms %}
+        <div class="card bg-dark-gradient text-light landlord-card shadow-sm p-3 hovermation" style="max-width: 400px;">
+            <a href="{% url 'my-profile' landlord.username %}" class="text-decoration-none text-light">
+                <div class="d-flex align-items-center mb-3">
+                    <img
+                        src="{{landlord.profile.image.url}}"
+                        alt="profile"
+                        class="rounded-circle"
+                        style="margin-right: .57em;width: 6em; height: 6em; object-fit: cover"
+                    />
+                    <div>
+                        <h5 class="mb-1">{{ landlord.username }}</h5>
+                        <p class="opacity-75 mb-0">{{ landlord.profile.address }}</p>
+                    </div>
+                </div>
+            </a>
+
+            <div class="d-flex justify-content-between text-center border-top pt-3">
+                <div>
+                    <p class="mb-0 fw-bold">{{ landlord.profile.followed_by.count }}</p>
+                    <small class="opacity-50 text-light">Followers</small>
+                </div>
+                <div>
+                    <p class="mb-0 fw-bold">{{ landlord.rental_set.count }}</p>
+                    <small class="opacity-50">Rentals</small>
+                </div>
+                <div>
+                    <form method="post" action="{% url 'people-with-rooms' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="profile_id" value="{{ landlord.profile.id }}">
+                        {% if landlord.profile in profile.follows.all %}
+                            <button style="width: 8em" class="mb-3 btn btn-success" name="follow" value="unfollow" type="submit">Unfollow</button>
+                        {% else %}
+                            <button style="width: 8em" class="mb-3 btn btn-outline-primary" name="follow" value="follow" type="submit">Follow</button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <h1 class="text-center text-light">Eish.. <span class="text-danger">no one</span> has posted rooms at the moment</h1>
+    <br />
+    <h3 class="text-center text-light">
+        If you have a room <a href="{% url 'post-rental' %}" class="btn btn-success">Post one</a>
+    </h3>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endif %}
+
+<br>
+{% endblock %}

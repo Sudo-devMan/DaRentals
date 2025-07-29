@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ rental.user.username }}'s Rental{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="text-center text-primary mb-4 border-bottom pb-2">{{ rental.user.username }}'s Rental</h1>
+
+    <div class="card bg-dark-gradient shadow-lg rounded-4 p-3">
+        <div class="row g-4">
+            <div class="col-lg-6 text-center">
+                <a href="{{ rental.image.url }}">
+                    <img src="{{ rental.image.url }}" alt="Rental Image"
+                         class="img-fluid rounded-4 shadow-sm" style="max-height: 400px;">
+                </a>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <h3 class="text-success">{{ rental.address }}</h3>
+                        <p class="border rounded-3 bg-dark-gradient p-3 bg-light">
+                            <img src="{% static 'icons/info.png' %}" class="me-2 opacity-50" style="height: 1.2em;">
+                            {{ rental.details }}
+                        </p>
+                        <p class="mt-2 opacity-50">{{rental.upload_date|date:"M d, Y H:i"}}</p>
+                    </div>
+
+                    <div class="mt-4">
+                        {% if l_user == rental.user.username %}
+                            <div class="d-grid gap-3">
+                                {% if rental.is_occupied %}
+                                    <button type="button" class="btn btn-warning btn-lg" disabled>
+                                        <i class="fas fa-lock me-2"></i> Occupied
+                                    </button>
+                                {% else %}
+                                    <a href="{% url 'checkout' rental.id %}" class="btn btn-success btn-lg">
+                                        <i class="fas fa-hand-holding-usd me-2"></i> Rent (R {{ rental.price }})
+                                    </a>
+                                {% endif %}
+
+                                <a href="{% url 'edit-rental' rental.id %}" class="btn btn-secondary btn-lg">
+                                    <i class="fas fa-pen-to-square me-2"></i> Edit
+                                </a>
+
+                                <a href="{% url 'u_sure_u_wanna_delete_your_rental' rental.id %}" class="btn btn-danger btn-lg">
+                                    <i class="fas fa-trash-alt me-2"></i> Delete
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="d-grid gap-3">
+                                {% if rental.is_occupied %}
+                                    <button type="button" class="btn btn-warning btn-lg" onclick="alert('Bruhh.. it\'s occupied')" disabled>
+                                        <i class="fas fa-lock me-2"></i> Occupied
+                                    </button>
+                                {% else %}
+                                    <a href="{% url 'checkout' rental.id %}" class="btn btn-success btn-lg">
+                                        <i class="fas fa-hand-holding-usd me-2"></i> Rent (R {{ rental.price }})
+                                    </a>
+                                {% endif %}
+
+                                <a href="{% url 'my-profile' rental.user.username %}" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-user-circle me-2"></i> View {{ rental.user.username }}'s Profile
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+{% endblock %}

@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papazv5aLh99OQobRMb2H0cOvDMLm/N1q0p7pAZXtGu+7YlAC+88grS2r1AAVOvKeAXL1dQfKuvWTRbqzVUZ0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+
+    <title>DaRentals | {% block title %}Rooms, Apartments, Business properties{% endblock %}</title>
+</head>
+<body>
+    {% block header %}
+    <header class="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div>
+                <a href="{% url 'my-profile' user %}">
+                    <img style="width: 3em; object-fit: cover; height: 3em" class="d-inline-block rounded-circle" src="{{user.profile.image.url}}" alt="profile picture" />
+                </a>
+                <a href="{% url 'my-profile' user %}" class="navbar-brand d-inline-block text-primary">{{user}}</a>
+            </div>
+
+            <!-- <a href="{% url 'search' %}" class="text-white ms-auto me-3">
+                <i class="fas fa-search" style="font-size: 1.3em;"></i>
+            </a> -->
+
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <a href="{% url 'home-page' %}" class="nav-item nav-link active">Home</a>
+                    <a href="{% url 'people-with-rooms' %}" class="nav-item nav-link">People with rentals</a>
+                    <a href="{% url 'availabe-rentals' %}" class="nav-item nav-link">Available rentals</a>
+                    <a href="{% url 'post-rental' %}" class="nav-item nav-link">Post A room</a>
+                    <a href="{% url 'my-profile' user %}" class="nav-item nav-link">My Profile</a>
+                </div>
+                <div class="navbar-nav ms-auto">
+                    <a href="{% url 'u_sure_u_wanna_logout' %}" class="nav-item nav-link">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+{% endblock %}
+
+{% block body %}
+
+<!-- IGNORE THIS UGLY JAVASCRIPT THAT IS ERRORING -->
+    <script>
+        const input = document.getElementById('searchInput');
+        const results = document.getElementById('rentalResults');
+
+        input.addEventListener('keyup', function () {
+            const query = input.value;
+
+            fetch(`/live-search/?search=${encodeURIComponent(query)}`)
+                .then(response => response.text())
+                .then(html => {
+                    results.innerHTML = html;
+                });
+        });
+    </script>
+
+    <div class="hero-title">
+        <h1 class="display-1 text-center" style="color: #128dff">DaRentals</h1>
+        <form method="post" style="transform: scale(1.2);" action="{% url 'search' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="search"></label>
+                <input class="search-input mb-4" type="text" name="search-rentals" placeholder="search..place, price, etc.">
+            </div>
+        </form>
+    </div>
+
+    <div class="rentals-container container mt-5">
+            <h1 class="text-center fs-2 m-5 text-primary blue-underline">All rentals</h1>
+        {% if rentals %}
+            <div class="row">
+                {% for rental in rentals %}
+                    <div class="col-12 col-sm-6 col-md-4 mb-4">
+                        <div class="card bg-dark text-light shadow-lg h-100 rounded-4 overflow-hidden">
+                            <a href="{{rental.image.url}}"><img src="{{ rental.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="rental image" /></a>
+                            <div class="card-body">
+                                <h4 class="card-title text-white fw-bold">{{ rental.address }}</h4>
+                                <p class="card-text text-light opacity-75" style="font-size: .9rem; color: #afafaf">{{ rental.details|truncatewords:15 }}<a href="{% url 'rental' rental.id %}" style="font-weight: bold">View more</a></p>
+                            </div>
+                            <div class="card-body border-top border-secondary d-flex justify-content-between align-items-center">
+                                <p class="fs-4 text-success mb-0">R{{ rental.price }} pm</p>
+                                {% if rental.is_occupied %}
+                                <p class="fs-6 text-warning mb-0">OCCUPIED</p>
+                                {% endif %}
+                                
+                                <a href="{% url 'rental' rental.id %}" class="btn btn-outline-secondary btn-sm">See</a>
+                            </div>
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <a href="{% url 'my-profile' rental.user.username %}" class="text-decoration-none text-light d-flex align-items-center gap-2">
+                                    <img src="{{ rental.user.profile.image.url }}" class="rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover" alt="Profile picture" />
+                                    <span>{{ rental.user.username }}</span>
+                                </a>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="profile_id" value="{{ rental.user.profile.id }}" />
+                                    {% if profile in rental.user.profile.followed_by.all %}
+                                        <button class="btn btn-success w-100" name="follow" value="unfollow" type="submit">Unfollow</button>
+                                    {% else %}
+                                        <button class="btn btn-outline-primary w-100" name="follow" value="follow" type="submit">Follow</button>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center text-light my-5">
+                <h2 class="mb-3">Eishh... nothing here yet</h2>
+                <p class="fs-5">
+                    No <span class="text-danger">rooms</span>, <span class="text-danger">apartments</span>, or <span class="text-danger">business properties</span> available. If you have one <a href="{% url 'post-rental' %}" class="btn btn-outline-success">post it</a><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </p>
+            </div>
+            <br><br><br><br><br><br><br><br><br><br>
+        {% endif %}
+    </div>
+
+    <br>
+    {% endblock %}
+
+    {% block footer %}
+<footer class="bg-dark text-white pt-5 pb-4 mt-5">
+    <div class="container text-center text-md-left">
+        <div class="row text-center text-md-left">
+            <!-- Logo and Description -->
+            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                <h2 class="text-uppercase mb-4 font-weight-bold" style="color: #128eff">DaRentals</h2>
+                <p>Find and rent your next home, office, or business space easily and securely. Connecting landlords with tenants across South Africa (or probably globally).</p>
+            </div>
+
+            <!-- Links -->
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Quick Links</h5>
+                <p><a href="{% url 'home' %}" class="text-white" style="text-decoration: none;">Home</a></p>
+                <p><a href="{% url 'availabe-rentals' %}" class="text-white" style="text-decoration: none;">Available rentals</a></p>
+                {% if user.is_authenticated %}
+                    <p><a href="{% url 'my-profile' user.username %}" class="text-white" style="text-decoration: none;">My Profile</a></p>
+                {% endif %}
+
+                <p><a href="{% url 'people-with-rooms' %}" class="text-white" style="text-decoration: none;">Browse Landlords</a></p>
+                <p><a href="{% url 'post-rental' %}" class="text-white" style="text-decoration: none;">Post a Rental</a></p>
+                <p><a href="{% url 'rented-rentals' %}" class="text-white" style="text-decoration: none;">Rented</a></p>
+            </div>
+
+            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Contact</h5>
+                <p><i class="fas fa-home me-2"></i> Polokwane, South Africa</p>
+                <p><i class="fas fa-whatsapp me-2"></i>+27 72 072 7038</p>
+                <p><i class="fas fa-phone"></i> <a href="tel:+27720727038" class="text-light text-decoration-none">+27 72 072 7038</a></p>
+                <p><i class="fas fa-email me-2"></i> <a href="mailto:sudo.devman@gmail.com" class="text-light text-decoration-none">Click here to email developer</a></p>
+                <p><i class="fas fa-clock me-2"></i> open wayawaya</p>
+            </div>
+
+            <div onclick="alert('No socials yet')" class="col-md-3 col-lg-4 col-xl-3 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Follow Us</h5>
+                <a href="#" class="text-white me-4"><i class="fab fa-facebook fa-lg"></i></a>
+                <a href="#" class="text-white me-4"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="#" class="text-white me-4"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="#" class="text-white me-4"><i class="fab fa-linkedin fa-lg"></i></a>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center mt-4">
+            <div class="col-md-7 col-lg-8">
+                <p class="text-center">
+                    &copy; <span id="copy_year"></span> DaRentals | Built with ❤️ and ☕ by Devman (WhatsApp: +27 72 072 7038)
+                </p>
+                <script type="text/javascript">document.getElementById('copy_year').textContent = new Date().getFullYear()</script>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    {% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

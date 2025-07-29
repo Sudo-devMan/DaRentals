@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block tittle %} {{ l_user.username }}'s Profile {% endblock %}
+
+{% block body %}
+<h1 class="text-center display-5 text-light mt-4 fw-bold border-bottom pb-3 w-100 blue-underline">{{ l_user.username|title }}</h1>
+
+
+<div class="profile-container bg-dark rounded-4 shadow-lg p-4 mx-3 mx-md-auto mt-4" style="max-width: 1100px;">
+    <div class="row g-4">
+        <div class="col-12 col-md-4 text-center">
+            <a href="{{ profile.image.url }}">
+                <img src="{{ profile.image.url }}" alt="Profile Picture"
+                     class="img-fluid rounded-4 border border-3 border-primary shadow-sm" style="max-width: 100%;">
+            </a>
+            {% if logged_in_user == l_user.username %}
+                <a href="{% url 'edit-profile' profile.user.username %}" class="btn btn-outline-light mt-3 w-75">Edit My Profile</a>
+                <a href="{% url 'rented-rentals' %}" class="btn btn-outline-light mt-2 w-75">Rented Rentals</a>
+                <a href="{% url 'my-payments' %}" class="btn btn-outline-success mt-2 w-75">View Payments</a>
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-md-5 text-light text-center text-md-start">
+            <h3 class="fw-bold text-capitalize">{{ profile.user.username }}</h3>
+            <p class="fs-5"><span><img src="{% static 'icons/home.png' %}"></span>{{ profile.address }}</p>
+            <p class="fs-6 opacity-75"><img src="{% static 'icons/phone.png' %}"></span>{{ profile.phone_number }}</p>
+            <i class="fs-6 opacity-50">Last modified: {{profile.date_modified}}</i>
+        </div>
+
+        <div class="col-12 col-md-3 text-center text-light">
+            <div class="mb-3">
+                <p class="fs-2 fw-bold mb-0">{{ rentals|length }}</p>
+                <span class="text-success opacity-75">Rentals</span>
+            </div>
+            {% if logged_in_user == l_user.username %}
+                <a class="text-decoration-none" href="#"> <!---- fix follow button not to redirect to landlords page ---->
+                    <div class="mb-3">
+                        <p class="fs-2 fw-bold mb-0">{{ profile.followed_by.all|length }}</p>
+                        <span class="text-success opacity-75">Followers</span>
+                    </div>
+                </a>
+            {% else %}
+                <div class="mb-3">
+                    <p class="fs-2 fw-bold mb-0">{{ profile.followed_by.all|length }}</p>
+                    <span class="text-success opacity-75">Followers</span>
+                </div>
+            {% endif %}
+            {% if logged_in_user != l_user.username %}
+                <form method="post">
+                    {% csrf_token %}
+                    {% if profile in user.profile.follows.all %}
+                        <button class="btn btn-success w-100" name="follow" value="unfollow" type="submit">Unfollow</button>
+                    {% else %}
+                        <button class="btn btn-outline-primary w-100" name="follow" value="follow" type="submit">Follow</button>
+                    {% endif %}
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="rentals-container container mt-5">
+    {% if rentals %}
+        <div class="row">
+            {% for rental in rentals %}
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card bg-dark text-light shadow-lg h-100 rounded-4 overflow-hidden">
+                        <img src="{{ rental.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="rental image">
+                        <div class="card-body">
+                            <h4 class="card-title fw-bold">{{ rental.address }}</h4>
+                            <p class="card-text opacity-75" style="font-size: .9rem;">{{ rental.details|truncatewords:15 }}<a class="text-decoration-none fw-bold text-white" href="{% url 'rental' rental.id %}">View more</a></p>
+                            <i class="opacity-50" style="font-size: .8rem">{{rental.upload_date}}</i>
+                        </div>
+                        <div class="card-body border-top border-secondary d-flex justify-content-between align-items-center">
+                            <p class="fs-4 text-success mb-0">R{{ rental.price }} pm</p>
+                                {% if rental.is_occupied %}
+                                <p class="fs-6 text-warning mb-0">OCCUPIED</p>
+                                {% endif %}
+                            <a href="{% url 'rental' rental.id %}" class="btn btn-outline-secondary btn-sm">See</a>
+                        </div>
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <a href="#" class="text-decoration-none text-light d-flex align-items-center gap-2">
+                                <img src="{{rental.user.profile.image.url}}" class="rounded-circle" style="width: 2em;" alt="Profile picture">
+                                <span>{{ rental.user.username }}</span>
+                            </a>
+                            <form method="post">
+                    {% csrf_token %}
+                    {% if profile in user.profile.follows.all %}
+                        <button class="btn btn-success w-100" name="follow" value="unfollow" type="submit">Unfollow</button>
+                    {% else %}
+                        <button class="btn btn-outline-primary w-100" name="follow" value="follow" type="submit">Follow</button>
+                    {% endif %}
+                </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center text-light my-5">
+            <h2 class="mb-3">Eishh... nothing here yet</h2>
+            <p class="fs-5">
+                No <span class="text-danger">rooms</span>, <span class="text-danger">apartments</span>, or <span class="text-danger">business properties</span> available. But if you have <a class="btn btn-success shadow" href="{% url 'post-rental' %}">Post one</a>
+            </p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
