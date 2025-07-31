@@ -44,7 +44,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = ['https://8a5442c1b2c5.ngrok-free.app', 'https://f0fe6325c4ed.ngrok-free.app', 'https://f0fe6325c4ed.ngrok-free.app', "https://darentals-project.onrender.com"]
+CSRF_TRUSTED_ORIGINS = ["https://darentals-project.onrender.com"]
 
 
 # Application definition
