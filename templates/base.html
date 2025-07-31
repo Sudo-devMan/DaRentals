@@ -145,7 +145,7 @@
             <!-- Links -->
             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
                 <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Quick Links</h5>
-                <p><a href="{% url 'home' %}" class="text-white" style="text-decoration: none;">Home</a></p>
+                <p><a href="{% url 'home-page' %}" class="text-white" style="text-decoration: none;">Home</a></p>
                 <p><a href="{% url 'availabe-rentals' %}" class="text-white" style="text-decoration: none;">Available rentals</a></p>
                 {% if user.is_authenticated %}
                     <p><a href="{% url 'my-profile' user.username %}" class="text-white" style="text-decoration: none;">My Profile</a></p>
