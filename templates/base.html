@@ -145,7 +145,7 @@
             <!-- Links -->
             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
                 <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Quick Links</h5>
-                <p><a href="{% url 'home' %}" class="text-white" style="text-decoration: none;">Home</a></p>
+                <p><a href="{% url 'home-page' %}" class="text-white" style="text-decoration: none;">Home</a></p>
                 <p><a href="{% url 'availabe-rentals' %}" class="text-white" style="text-decoration: none;">Available rentals</a></p>
                 {% if user.is_authenticated %}
                     <p><a href="{% url 'my-profile' user.username %}" class="text-white" style="text-decoration: none;">My Profile</a></p>
@@ -159,16 +159,16 @@
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
                 <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Contact</h5>
                 <p><i class="fas fa-home me-2"></i> Polokwane, South Africa</p>
-                <p><i class="fas fa-whatsapp me-2"></i>+27 72 072 7038</p>
-                <p><i class="fas fa-phone"></i> <a href="tel:+27720727038" class="text-light text-decoration-none">+27 72 072 7038</a></p>
+                <p><i class="fas fa-phone"></i> <a href="tel:+27671389102" class="text-light text-decoration-none">+27 67 138 9102 (Founder)</a></p>
+                <p><i class="fas fa-phone"></i> <a href="tel:+27720727038" class="text-light text-decoration-none">+27 72 072 7038 (Developer)</a></p>
                 <p><i class="fas fa-email me-2"></i> <a href="mailto:sudo.devman@gmail.com" class="text-light text-decoration-none">Click here to email developer</a></p>
                 <p><i class="fas fa-clock me-2"></i> open wayawaya</p>
             </div>
 
-            <div onclick="alert('No socials yet')" class="col-md-3 col-lg-4 col-xl-3 mx-auto mt-3">
+            <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mt-3">
                 <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Follow Us</h5>
-                <a href="#" class="text-white me-4"><i class="fab fa-facebook fa-lg"></i></a>
-                <a href="#" class="text-white me-4"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="https://web.facebook.com/people/Nkari-Patrick-Mphaki/61574461494123/?_rdc=1&_rdr#" target="_blank" class="text-white me-4"><i class="fab fa-facebook fa-lg"></i></a>
+                <a href="https://www.instagram.com/dev_____man/" target="_blank" class="text-white me-4"><i class="fab fa-twitter fa-lg"></i></a>
                 <a href="#" class="text-white me-4"><i class="fab fa-instagram fa-lg"></i></a>
                 <a href="#" class="text-white me-4"><i class="fab fa-linkedin fa-lg"></i></a>
             </div>
@@ -176,8 +176,11 @@
 
         <div class="row d-flex justify-content-center mt-4">
             <div class="col-md-7 col-lg-8">
-                <p class="text-center">
-                    &copy; <span id="copy_year"></span> DaRentals | Built with ❤️ and ☕ by Devman (WhatsApp: +27 72 072 7038)
+                <p class="text-center" style="font-size: .5rem">
+                    &copy; <span id="copy_year"></span> DaRentals | Founded by Nkari P. Mphaki | Built with ❤️ and ☕ by Hendrick M. Mashamaite
+                </p>
+                <p>
+                    
                 </p>
                 <script type="text/javascript">document.getElementById('copy_year').textContent = new Date().getFullYear()</script>
             </div>

@@ -47,7 +47,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = ['https://8a5442c1b2c5.ngrok-free.app', 'https://f0fe6325c4ed.ngrok-free.app', 'https://f0fe6325c4ed.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ["https://darentals-project.onrender.com"]
 
 
 # Application definition
@@ -143,8 +143,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
