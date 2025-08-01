@@ -4,3 +4,8 @@ reportlab
 twilio
 africastalking
 python-decouple
+psycopg2-binary
+dj-database-url
+gunicorn
+whitenoise
+python-dotenv
