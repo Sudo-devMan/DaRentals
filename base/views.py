@@ -46,6 +46,7 @@ def home(r):
     business_count = Rental.objects.filter(type_of_rental='business_property').count()
     student_dorms_count = Rental.objects.filter(type_of_rental='student_dorm').count()
     popular_count = Rental.objects.filter(is_popular=True).count()
+    rental_obj = None
 
     search_query = r.GET.get('search', '')
     rentals_qs = Rental.objects.all().select_related('user', 'user__profile')[:10]
