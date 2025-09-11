@@ -1,0 +1,75 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/fluffless.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.css' %}">
+	<title>DaRentals | {% block title %}Rooms, Apartments, Business Properties waiting for you to rent {% endblock %}</title>
+	<style>
+		.containerr{
+			width: 100%;
+			min-height: 100vh;
+			background-image: url({% static 'tf/images/hero_bg_1.jpg' %});
+			color: #fff;
+			z-index: -1;
+		}
+		.roww{
+			width: 100%;
+		}
+		.navbarr{
+			width: 100%;
+			top: 0em;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.navbarr h1{
+			transform: translateX(10px);
+		}
+		.content{
+			display: flex;
+			justify-self: center;
+			align-self: center;
+			align-items: center;
+			flex-direction: column;
+			margin: 5em;
+		}
+		.content h1{
+			font-size: 3rem;
+		}
+	</style>
+</head>
+<body>
+
+<!-- LANDING. -->
+	<div class="containerr">
+		<div class="roww">
+			<nav class="navbarr">
+				<h1>DaRentals</h1>
+				<ul>
+					<li><a href="#">Home</a></li>
+					<li><a href="#">About</a></li>
+					<li><a href="#">Rentals</a></li>
+					<li><a href="#">Rented</a></li>
+					<li><a href="#">Profile</a></li>
+				</ul>
+			</nav>
+			<div class="content">
+				<h1>Sign up and get homed</h1>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor</p>
+				<a href="#">Sign up</a>
+			</div>
+		</div>
+	</div>
+
+<!-- NAVIGATION -->
+
+<!-- BODY CONTENT -->
+
+<!-- FOOTER -->
+</body>
+</html>

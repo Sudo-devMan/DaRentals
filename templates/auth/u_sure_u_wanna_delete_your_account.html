@@ -1,16 +1,22 @@
-
 {% extends 'base.html' %}
-{% block title %} Are you sure you wanna delete your account?{% endblock %}
+{% block title %} Delete Account Confirmation {% endblock %}
+
+{% block header %}{% endblock %}
 
 {% block body %}
-    <h1 class="text-center m-5 text-primary">Are you sure you want to <span class="text-danger">delete your account</span>?</h1>
-    
-    <center>
-        <a href="{% url 'home' %}" class="btn btn-outline-primary m-2">No</a>
-        <a href="{% url 'delete-account' the_user.id %}" class="btn btn-outline-danger m-2">Yes</a>
-    </center>
+<div class="container py-5 my-5">
+  <div class="text-center bg-dark p-5 rounded-4 shadow-lg border border-danger-subtle">
+    <h1 class="text-danger fw-bold mb-4">Delete Your Account?</h1>
+    <p class="fs-5 text-light mb-5">
+      This action is <span class="text-warning">permanent</span> and cannot be undone. <br>
+      Are you sure you want to proceed?
+    </p>
 
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
+    <div class="d-flex justify-content-center gap-4">
+      <a onclick="history.back()" class="btn btn-outline-primary px-4 py-2 fs-5">No, Take Me Back</a>
+      <a href="{% url 'delete-account' the_user.id %}" class="btn btn-outline-danger px-4 py-2 fs-5">Yes, Delete</a>
+    </div>
+  </div>
+</div>
 {% endblock %}
+{% block footer %}<br><br><br><br><br><br><br><br><br><br><br>{% endblock %}

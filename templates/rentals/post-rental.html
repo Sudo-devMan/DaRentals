@@ -1,53 +1,358 @@
-{% extends 'base.html' %}
+
 {% load static %}
-{% block title %} Post a Rental {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="{% static 'tf/images/favicon.ico' %}" />
 
-{% block body %}
-<h1 class="blue-underline text-center mt-4 display-5 fw-bold text-light">Post A Rental</h1>
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap5, darentals, login" />
 
-{% for msg in messages %}
-    <p class="text-danger text-center mt-3 fw-semibold">{{ msg }}</p>
-{% endfor %}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-<form class="a-form bg-dark rounded-4 shadow-lg p-4 mt-4 mx-auto" style="max-width: 700px;" enctype="multipart/form-data" method="post">
-    {% csrf_token %}
-    <div class="mb-4">
-        <label class="form-label text-light fw-bold">Rental Image <span class="opacity-75">(Max 1 image)</span></label>
-        <input required type="file" name="image" class="form-control bg-dark text-light border-light" accept="image/*">
-        <small class="form-text text-success mt-2 d-block">Press "Choose file" to upload a picture tenants will love.</small>
+    <link rel="stylesheet" href="{% static 'tf/fonts/icomoon/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/fonts/flaticon/font/flaticon.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'tf/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/aos.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
+
+    <title>
+      DaRentals | {% block title %} Post Rental {% endblock %}
+    </title>
+  </head>
+<body style="background-image: linear-gradient(45deg, rgb(238, 238, 253), rgb(236, 255, 241));">
+      <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close">
+          <span class="icofont-close js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
     </div>
 
-    <div class="mb-4 input-group">
-        <span class="input-group-text bg-dark border-light">
-            <img src="{% static 'icons/home.png' %}" alt="Home Icon" style="width: 1.2rem;">
-        </span>
-        <textarea required name="place" type="text" class="form-control input bg-dark text-light border-light" placeholder="Enter address, (eg. province, city, town, street, howse number) you can provide in some meta details such as 'near MASTEC college'" rows="5"></textarea>
-    </div>
-
-    <div class="mb-4">
-        <textarea required name="details" placeholder="Type in some details to attract tenants, rules, conditions, etc."
-                  class="form-control input bg-dark text-light border-light" rows="5"></textarea>
-    </div>
-
-    <div class="mb-4 input-group">
-        <span class="input-group-text bg-dark text-light border-light">R</span>
-        <input required type="text" name="price" class="form-control input bg-dark text-light border-light" placeholder="How much per month?">
-    </div>
-
-    <div>
-        {% if user.profile.subaccount_code %}
-            <button type="submit" class="btn btn-success fs-5 w-100 d-flex align-items-center justify-content-center gap-2">
-                Post Rental <img src="{% static 'icons/upload.png' %}" alt="Upload Icon" style="width: 1.2rem;">
-            </button>
-        {% else %}
-            <a href="{% url 'edit-profile' user.username %}" class="btn btn-danger fs-5 w-100 d-flex align-items-center justify-content-center gap-2">
-                 Edit your profile and add bank details to continue
+    
+    <nav class="site-nav">
+      <div class="container">
+        <div class="menu-bg-wrap">
+          <div class="site-navigation">
+            {% if user.is_authenticated %}
+            <a href="{% url 'home' %}" class="fs-sm-6 fs-xs-6 fs-md-5 logo m-0 float-start">DaRentals - 
+              <a href="{% url 'my-profile' user.username %}" class="logo mx-1 float-start">
+                <!-- {{user}} {% if user.profile.is_premium %}<a href="#plans" class="text-warning fw-bold">Premium</a>{% else %}<a href="{% url 'subscription_page' %}" class="text-warning fw-bold">Go Premium</a>{% endif %} -->
+              </a>
             </a>
-        {% endif %}
+            {% else %}
+            <a href="{% url 'home' %}" class="logo m-0 float-start">DaRentals</a>
+            {% endif %}
+
+            <ul
+              class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end"
+            >
+              <li class="active"><a href="{% url 'home' %}">Home</a></li>
+              <li class="has-children">
+                <a href="{% url 'rentals' %}">Rentals</a>
+                <ul class="dropdown">
+                  {% if user.is_authenticated %}
+                    <!-- <li><a href="{% url 'rented-rentals' %}">Rented rentals</a></li> -->
+                  {% endif %}
+                  <!-- <li><a href="{%url 'availabe-rentals' %}">Available rentals</a></li> -->
+                  <li><a href="{% url 'apartments' %}">Apartmemnts</a></li>
+                  <li><a href="{% url 'business-properties' %}">Business rentals</a></li>
+                  <li class="has-children">
+                    <a href="{% url 'rooms' %}">Rooms</a>
+                    <ul class="dropdown">
+                      <li><a href="{% url 'student-dorms' %}">Student dorms</a></li>
+                      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              {% if user.is_authenticated %}
+                <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+                <li><a href="{% url 'my-profile' user.username %}">Dashboard</a></li>
+                <li><a class="text-danger fw-bold" href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+              {% endif %}
+              <li><a href="{% url 'terms-of-use' %}">Terms of use</a></li>
+            </ul>
+
+            <a
+              href="#"
+              class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
+              data-toggle="collapse"
+              data-target="#main-navbar"
+            >
+              <span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+
+    <div
+      class="hero page-inner overlay"
+      style="background-image: url({% static 'tf/images/hero_bg_2.jpg' %})"
+    >
+      <div class="container">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-lg-9 text-center mt-5">
+            <h1 class="heading" data-aos="fade-up">Post Rental</h1>
+                          {% for msg in messages %}
+                {% if msg.tags == 'error' %}
+                  <div class="container mt-5">
+                    <div class="alert alert-danger alert-dissmissable fade show" role="alert">
+                      {{msg}}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="container mt-5">
+                    <div class="alert alert-{{msg.tags}} alert-dissmissable fade show" role="alert">
+                      {{msg}}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+
+            <nav
+              aria-label="breadcrumb"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <ol class="breadcrumb text-center justify-content-center">
+                <li class="breadcrumb-item"><a href="{% url 'home-page' %}">Home</a></li>
+                <li
+                  class="breadcrumb-item active text-white-50"
+                  aria-current="page"
+                >
+                  Post Rental
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
-</form>
+<div class="container py-5">
+  <form method="POST" enctype="multipart/form-data" class="shadow-lg bg-light p-4 mx-auto w-100" style="max-width: 800px;">
+    {% csrf_token %}
+    {% for msg in messages %}
+      <p class="text-success text-center fw-semibold">{{ msg }}</p>
+    {% endfor %}
+      <h3 class="text-warning">Please <span class="text-danger">do not forget</span> to set this <span class="text-danger">as occupied</span> after you get a tenant</h3>
+    <!-- Profile Image Upload -->
+    <div class="form-group m-3">
+    <label for="profile_image">Rental Prictures (Outside, inside, etc.)(Max: 5)   <!--  <a href="#">Click here if you want to upload more than 3</a>:</label> -->
+      <div class="border rounded-3 p-3 text-center bg-dark bg-opacity-25">
+        <label class="form-label opacity-75">Click to upload images</label>
+        <input required class="form-control" type="file" name="image" multiple accept="image/*">
+      </div>
+    </div>
 
-<!-- <p class="text-center">{{ user.profile.subaccount_code }}</p> -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group m-3">
+          <label for="size">Rental Size (eg. 8m x 9m, etc.):</label>
+          <input required class="form-control" type="text" name="size" placeholder="size...">
+        </div>
+      </div>
 
-<br><br><br>
-{% endblock %}
+      <div class="col-md-6">
+        <div onclick="alert('You cannot edit this for now')" class="form-group m-3">
+          <label for="phone_number">Phone number <span class="text-danger">*</span>:</label>
+          <input disabled value="{{ profile.phone_number }}" class="form-control" type="tel" name="phone_number" placeholder="Phone number...">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group m-3">
+          <label for="baths">Number of bathrooms/baths <span class="text-danger">*</span>:</label>
+          <input required value="0" class="form-control" type="number" name="baths" placeholder="baths...">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group m-3">
+          <label for="beds">Number of bedrooms <span class="text-danger">*</span>:</label>
+          <input required value="0" class="form-control" type="number" name="beds" placeholder="bedrooms...">
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group m-3">
+      <label for="address">Rental address:</label>
+      <textarea required name="address" class="form-control" rows="3" placeholder="Country, Province, City, etc.">{{ profile.address }}</textarea>
+    </div>
+
+    <div class="form-group m-3">
+      <label for="details">Details:</label>
+      <textarea required name="details" class="form-control" rows="3" placeholder="Click here to write something interesting about this rental.. you can also write in a few rules too. Write whatever you wanna write."></textarea>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group m-3">
+          <label for="price">Rent Per Month:</label>
+          <input required class="form-control" type="text" name="price" placeholder="Price">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group m-3">
+          <label for="type">Type of rental:</label>
+          <select class="form-control" required name="type">
+            <option value="room">Room</option>
+            <option value="student_dorm">Student Dorm</option>
+            <option value="business_property">Business Property</option>
+            <option value="apartment">Apartment</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center my-4">
+      {% if user.profile.subaccount_code == 'NONE' and False %}
+        <a href="{% url 'edit-profile' user.username %}" class="btn btn-dark px-4 py-2">
+          <i class="fas fa-lock me-2"></i>Click here to add a bank account to receive rent payments
+        </a>
+      {% else %}
+        <button type="submit" class="btn btn-primary px-4 py-2">
+          <i class="fas fa-upload me-2"></i>Post Rental
+        </button>
+      {% endif %}
+    </div>
+    
+  </form>
+
+
+  <div class="text-center my-4">
+    <a onclick="history.back()">
+      <button class="btn btn-danger">
+        <i class="fa-solid fa-arrow-left me-2"></i>Return
+      </button>
+    </a>
+  </div>
+</div>
+
+<br><br><br><br><br>
+
+  
+<div class="site-footer">
+  <div class="container">
+    <div class="row">
+      
+      <!-- Contact Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Contact</h3>
+          <address>Polokwane, Moletjie</address>
+          <ul class="list-unstyled links">
+            <li><a target="_blank" href="tel://+27678558799">+27 67 855 8799</a></li>
+            <li><a target="_blank" href="tel://+27671389102">+27 67 138 9102</a></li>
+            <li><a target="_blank" href="mailto:darentals.saas@gmail.com">darentals.saas@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sources Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Sources</h3>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <!-- <li><a href="{% url 'people-with-rooms' %}">Landlords</a></li> -->
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+              <!-- <li><a href="{% url 'rented-rentals' %}">Rented Rentals</a></li> -->
+            {% endif %}
+            <li><a href="{% url 'rentals' %}">All Rentals</a></li>
+          </ul>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'rooms' %}">Rooms</a></li>
+            <li><a href="{% url 'apartments' %}">Apartments</a></li>
+            <li><a href="{% url 'student-dorms' %}">Student Dorms</a></li>
+            <li><a href="{% url 'business-properties' %}">Business Properties</a></li>
+            {% if user.is_authenticated %}
+              <!-- <li><a href="{% url 'my-payments' %}">My Payments</a></li> -->
+              <!-- <li><a href="{% url 'subscribe' %}">Subscribe</a></li> -->
+              <!-- <li><a href="{% url 'subscription_page' %}">Go Premium</a></li> -->
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Links Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Links</h3>
+          <ul class="list-unstyled links">
+            <li><a href="{% url 'terms-of-use' %}">Terms of Use</a></li>
+            <!-- <li><a href="{% url 'search' %}">Search</a></li> -->
+            <!-- <li><a href="{% url 'secret_656profiles' %}">Secret Profiles</a></li> -->
+             {% if not user.is_authenticated %}
+            <li><a href="{% url 'sign-up' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% else %}
+            <li><a href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+            {% endif %}
+          </ul>
+
+          <ul class="list-unstyled social">
+            <li><a target="_blank" href="https://www.instagram.com/darentals"><span class="icon-instagram"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-twitter"></span></a></li> -->
+            <li><a target="_blank" href="https://web.facebook.com/profile.php?id=61578741312506" target="_blank"><span class="icon-facebook"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-linkedin"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-pinterest"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-dribbble"></span></a></li> -->
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <p>
+          Copyright &copy;
+          <script>document.write(new Date().getFullYear());</script>
+          . All Rights Reserved. &mdash; Designed with love by
+          <a href="https://untree.co">Untree.co</a>
+        </p>
+        <div>
+          Distributed by
+          <a href="https://themewagon.com/" target="_blank">themewagon</a>
+        </div>
+        <div> <br>
+          Founded by Mphaki N.P
+        </div>
+        <div>
+          Developed by Mashamaite H.M
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+    <script src="{% static 'tf/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'tf/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'tf/js/aos.js' %}"></script>
+    <script src="{% static 'tf/js/navbar.js' %}"></script>
+    <script src="{% static 'tf/js/counter.js' %}"></script>
+    <script src="{% static 'tf/js/custom.js' %}"></script>
+</body>
+</html>

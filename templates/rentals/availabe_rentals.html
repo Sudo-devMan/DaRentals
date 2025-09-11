@@ -1,95 +1,325 @@
-
-{% extends 'base.html' %}
+<!-- /*
+* Template Name: Property
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!DOCTYPE html>
 {% load static %}
-{% block title %} Available rentals {% endblock %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="{% static 'tf/images/favicon.ico' %}" />
 
-{% block body %}
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap5" />
 
-    <h1 class="text-primary text-center blue-underline mt-5 mb-4">Available rentals</h1>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-    <form method="post" style="transform: scale(1.2);" action="{% url 'search' %}">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="search"></label>
-            <input class="search-input mb-4" type="text" name="search-rentals" placeholder="search..place, price, etc.">
+    <link rel="stylesheet" href="{% static 'tf/fonts/icomoon/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/fonts/flaticon/font/flaticon.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'tf/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/aos.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/style.css' %}" />
+
+    <title>
+      DaRentals | All Rentals
+    </title>
+  </head>
+  <body>
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close">
+          <span class="icofont-close js-menu-toggle"></span>
         </div>
-    </form>
-
-
-
- <!--    <div id="rentalResults">
-        {% if search_query %}
-            <h1 class="text-center text-primary m-5">
-                Search Results for <span class="text-success">{{ search_query }}</span>
-            </h1>
-            {% include 'partials/rental_cards.html' %}
-        {% else %}
-            <div class="text-center fs-5 mt-4">
-                Start typing to search rentals by address, price, or username...
-            </div>
-        {% endif %}
-    </div> -->
-
-<!-- IGNORE THIS UGLY JAVASCRIPT THAT IS ERRORING -->
-    <script>
-        const input = document.getElementById('searchInput');
-        const results = document.getElementById('rentalResults');
-
-        input.addEventListener('keyup', function () {
-            const query = input.value;
-
-            fetch(`/live-search/?search=${encodeURIComponent(query)}`)
-                .then(response => response.text())
-                .then(html => {
-                    results.innerHTML = html;
-                });
-        });
-    </script>
-
-    <div class="rentals-container container mt-5">
-        {% if rentals %}
-            <div class="row">
-                {% for rental in rentals %}
-                    <div class="col-12 col-sm-6 col-md-4 mb-4">
-                        <div class="card bg-dark text-light shadow-lg h-100 rounded-4 overflow-hidden">
-                            <a href="{{rental.image.url}}"><img src="{{ rental.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="rental image" /></a>
-                            <div class="card-body">
-                                <h4 class="card-title text-white fw-bold">{{ rental.address }}</h4>
-                                <p class="card-text text-light opacity-75" style="font-size: .9rem; color: #afafaf">{{ rental.details|truncatewords:15 }}<a href="{% url 'rental' rental.id %}" style="font-weight: bold">View more</a></p>
-                            </div>
-                            <div class="card-body border-top border-secondary d-flex justify-content-between align-items-center">
-                                <p class="fs-4 text-success mb-0">R{{ rental.price }} pm</p>
-                                <a href="{% url 'rental' rental.id %}" class="btn btn-outline-secondary btn-sm">See</a>
-                            </div>
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <a href="{% url 'my-profile' rental.user.username %}" class="text-decoration-none text-light d-flex align-items-center gap-2">
-                                    <img src="{{ rental.user.profile.image.url }}" class="rounded-circle" style="width: 2em;" alt="Profile picture" />
-                                    <span>{{ rental.user.username }}</span>
-                                </a>
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="profile_id" value="{{ rental.user.profile.id }}" />
-                                    {% if profile in rental.user.profile.followed_by.all %}
-                                        <button class="btn btn-success w-100" name="follow" value="unfollow" type="submit">Unfollow</button>
-                                    {% else %}
-                                        <button class="btn btn-outline-primary w-100" name="follow" value="follow" type="submit">Follow</button>
-                                    {% endif %}
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="text-center text-light my-5">
-                <h2 class="mb-3">Eishh... nothing here yet</h2>
-                <p class="fs-5">
-                    No <span class="text-danger">rooms</span>, <span class="text-danger">apartments</span>, or <span class="text-danger">business properties</span> available. Or we did <span class="text-danger">not find</span> what you searched for. ({{search_query}})<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                </p>
-            </div>
-            <br><br><br><br><br><br><br><br><br><br>
-        {% endif %}
+      </div>
+      <div class="site-mobile-menu-body"></div>
     </div>
 
+        <nav class="site-nav">
+      <div class="container">
+        <div class="menu-bg-wrap">
+          <div class="site-navigation">
+            {% if user.is_authenticated %}
+            <a href="{% url 'home' %}" class="fs-sm-6 fs-xs-6 fs-md-5 logo m-0 float-start">DaRentals - 
+              <a href="{% url 'my-profile' user.username %}" class="logo mx-1 float-start">
+                {{user}} {% if user.profile.is_premium %}<a href="#plans" class="text-warning fw-bold">Premium</a>{% else %}<a href="{% url 'subscription_page' %}" class="text-warning fw-bold">Go Premium</a>{% endif %}
+              </a>
+            </a>
+            {% else %}
+            <a href="{% url 'home' %}" class="logo m-0 float-start">DaRentals</a>
+            {% endif %}
+
+            <ul
+              class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end"
+            >
+              <li class="active"><a href="{% url 'home' %}">Home</a></li>
+              <li class="has-children">
+                <a href="{% url 'rentals' %}">Rentals</a>
+                <ul class="dropdown">
+                  {% if user.is_authenticated %}
+                    <li><a href="{% url 'rented-rentals' %}">Rented rentals</a></li>
+                  {% endif %}
+                  <li><a href="{%url 'availabe-rentals' %}">Available rentals</a></li>
+                  <li><a href="{% url 'apartments' %}">Apartmemnts</a></li>
+                  <li><a href="{% url 'business-properties' %}">Business rentals</a></li>
+                  <li class="has-children">
+                    <a href="{% url 'rooms' %}">Rooms</a>
+                    <ul class="dropdown">
+                      <li><a href="{% url 'student-dorms' %}">Student dorms</a></li>
+                      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              {% if user.is_authenticated %}
+                <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+                <li><a href="{% url 'my-profile' user.username %}">Dashboard</a></li>
+                <li><a class="text-danger fw-bold" href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+              {% endif %}
+              <li><a href="{% url 'terms-of-use' %}">Terms of use</a></li>
+            </ul>
+
+            <a
+              href="#"
+              class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
+              data-toggle="collapse"
+              data-target="#main-navbar"
+            >
+              <span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      class="hero page-inner overlay"
+      style="background-image: url({% static 'tf/images/hero_bg_2.jpg' %})"
+    >
+      <div class="container">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-lg-9 text-center mt-5">
+            <h1 class="heading" data-aos="fade-up">Available Rentals</h1>
+
+            <nav
+              aria-label="breadcrumb"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <ol class="breadcrumb text-center justify-content-center">
+                <li class="breadcrumb-item"><a href="{% url 'home-page' %}">Home</a></li>
+                <li
+                  class="breadcrumb-item active text-white-50"
+                  aria-current="page"
+                >
+                  Available Rentals
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if rentals %}
+    <div class="section section-properties">
+      <div class="container">
+        <div class="row mb-5 align-items-center">
+          <div class="col-lg-6 text-center mx-auto">
+            <h2 class="font-weight-bold text-primary heading">
+              Available Rentals
+            </h2>
+          </div>
+        </div>
+        <div class="row">
+          {% for rental in rentals %}
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+            <div class="property-item mb-30">
+              <a href="{% url 'rental' rental.id %}" class="img">
+                <img src="{{rental.images.first.image.url}}" alt="Image" class="img-fluid" />
+              </a>
+
+              <div class="property-content">
+                <div class="price mb-2"><span>R{{rental.price}}</span></div>
+                <div>
+                  <span class="d-block mb-2 text-black-50"
+                    >{{rental.user.username}}</span
+                  >
+                  <span class="city d-block mb-3">{{rental.address}}</span>
+
+                  <div class="specs d-flex mb-4">
+                    <span class="d-block d-flex align-items-center me-3">
+                      <span class="icon-bed me-2"></span>
+                      <span class="caption">{{rental.beds}} beds</span>
+                    </span>
+                    <span class="d-block d-flex align-items-center">
+                      <span class="icon-bath me-2"></span>
+                      <span class="caption">{{rental.baths}} baths</span>
+                    </span>
+                  </div>
+
+                  <a
+                    href="{% url 'rental' rental.id %}"
+                    class="btn btn-primary py-2 px-3"
+                    >See details</a
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- .item -->
+          </div>
+          {% endfor %}
+          
+        </div>
+        <!-- <div class="row align-items-center py-5">
+          <div class="col-lg-3">Pagination (1 of 10)</div>
+          <div class="col-lg-6 text-center">
+            <div class="custom-pagination">
+              <a href="#">1</a>
+              <a href="#" class="active">2</a>
+              <a href="#">3</a>
+              <a href="#">4</a>
+              <a href="#">5</a>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    {% else %}    <br>
     <br>
-    {% endblock %}
+      <center>
+        <div class="w-75 p-5 border">
+        <br>
+        <h1 class="text-center text-warning">Eishh..</h1>
+        <p class="text-black-50">There are no available rentals yet. But if you have one, <a href="{% url 'post-rental' %}"><button class="btn btn-primary py-2">Post it</button></a></p>
+        <br>
+        <p>NOTE: This is not loading anything btw... :)</p>
+        <span class="spinner-border"><span class="fa-solid fa-home text-black"></span></span>
+        </div>
+      </center> <br><br><br>
+    {% endif %}
+
+    <div class="site-footer">
+  <div class="container">
+    <div class="row">
+      
+      <!-- Contact Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Contact</h3>
+          <address>Polokwane, Moletjie</address>
+          <ul class="list-unstyled links">
+            <li><a target="_blank" href="tel://+27678558799">+27 67 855 8799</a></li>
+            <li><a target="_blank" href="tel://+27671389102">+27 67 138 9102</a></li>
+            <li><a target="_blank" href="mailto:darentals.saas@gmail.com">darentals.saas@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sources Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Sources</h3>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <!-- <li><a href="{% url 'people-with-rooms' %}">Landlords</a></li> -->
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+              <li><a href="{% url 'rented-rentals' %}">Rented Rentals</a></li>
+            {% endif %}
+            <li><a href="{% url 'rentals' %}">All Rentals</a></li>
+          </ul>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'rooms' %}">Rooms</a></li>
+            <li><a href="{% url 'apartments' %}">Apartments</a></li>
+            <li><a href="{% url 'student-dorms' %}">Student Dorms</a></li>
+            <li><a href="{% url 'business-properties' %}">Business Properties</a></li>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'my-payments' %}">My Payments</a></li>
+              <!-- <li><a href="{% url 'subscribe' %}">Subscribe</a></li> -->
+              <li><a href="{% url 'subscription_page' %}">Go Premium</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Links Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Links</h3>
+          <ul class="list-unstyled links">
+            <li><a href="{% url 'terms-of-use' %}">Terms of Use</a></li>
+            <!-- <li><a href="{% url 'search' %}">Search</a></li> -->
+            <!-- <li><a href="{% url 'secret_656profiles' %}">Secret Profiles</a></li> -->
+             {% if not user.is_authenticated %}
+            <li><a href="{% url 'sign-up' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% else %}
+            <li><a href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+            {% endif %}
+          </ul>
+
+          <ul class="list-unstyled social">
+            <li><a target="_blank" href="https://www.instagram.com/darentals"><span class="icon-instagram"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-twitter"></span></a></li> -->
+            <li><a target="_blank" href="https://web.facebook.com/profile.php?id=61578741312506" target="_blank"><span class="icon-facebook"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-linkedin"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-pinterest"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-dribbble"></span></a></li> -->
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <p>
+          Copyright &copy;
+          <script>document.write(new Date().getFullYear());</script>
+          . All Rights Reserved. &mdash; Designed with love by
+          <a href="https://untree.co">Untree.co</a>
+        </p>
+        <div>
+          Distributed by
+          <a href="https://themewagon.com/" target="_blank">themewagon</a>
+        </div>
+        <div> <br>
+          Founded by Mphaki N.P
+        </div>
+        <div>
+          Developed by Mashamaite H.M
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    <!-- /.site-footer -->
+
+    <!-- Preloader -->
+    <div id="overlayer"></div>
+    <div class="loader">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <script src="{% static 'tf/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'tf/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'tf/js/aos.js' %}"></script>
+    <script src="{% static 'tf/js/navbar.js' %}"></script>
+    <script src="{% static 'tf/js/counter.js' %}"></script>
+    <script src="{% static 'tf/js/custom.js' %}"></script>
+  </body>
+</html>

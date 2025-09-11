@@ -26,9 +26,15 @@ rental_urls = [
     path('edit-rental/<int:id>', rental_views.edit_rental, name='edit-rental'),
     path('u_sure_u_wanna_delete_your_rental/<int:id>', rental_views.u_sure_u_wanna_delete_your_rental, name='u_sure_u_wanna_delete_your_rental'),
     path('delete_rental/<int:id>', rental_views.delete_rental, name='delete_rental'),
-    path('availabe-rentals', rental_views.availabe_rentals, name='availabe-rentals'),
+    path('available-rentals', rental_views.availabe_rentals, name='availabe-rentals'),
     path('uyaphapha', rental_views.delete_rental, name='uyaphapha'),
     path('rented-rentals', rental_views.rented_rentals, name='rented-rentals'),
+    path('rentals', rental_views.all_rentals, name='rentals'),
+    path('rooms', rental_views.rooms, name='rooms'),
+    path('student-dorms', rental_views.student_dorms, name='student-dorms'),
+    path('apartments', rental_views.apartments, name='apartments'),
+    path('business-properties', rental_views.business_properties, name='business-properties'),
+    path('rental/<int:rental_id>/<str:action>', rental_views.toggle_rating, name='toggle_rating'),
 ]
 
 payment_urls = [
@@ -38,9 +44,10 @@ payment_urls = [
     path('checkout/<int:id>', payment_views.create_paystack_checkout_session, name='checkout'),
     path('webhook/paystack', payment_views.paystack_webhook), # go to paystack dashboard settings and paste "ngrokurl/mywebhookurl"
     path('my-payments', payment_views.my_payments, name='my-payments'),
-    path('download/<payment_reference>', payment_views.download_receipt, name='download')
+    path('download/<payment_reference>', payment_views.download_receipt, name='download'),
+    path('subscribe/', payment_views.subscribe, name='subscribe'),  # Landing page starts checkout
+    path('subscription/', payment_views.subscription_page, name='subscription_page'),  # Post-payment landing]
 ]
-
 
 # https://f0fe6325c4ed.ngrok-free.app/webhook/paystack
 # https://f0fe6325c4ed.ngrok-free.app

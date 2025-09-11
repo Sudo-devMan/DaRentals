@@ -98,3 +98,22 @@ def create_subaccount(business_name, account_number, bank_code):
     
     print("Subaccount creation failed:", response.json())
     return "NONE"
+
+def update_paystack_subbaccount(sub, bank, account_number):
+    url = f"https://api.paystack.co/subaccount/{sub}"
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "settlement_bank": bank,
+        "account_number": account_number
+    }
+
+    response = requests.put(url, headers=headers, json=data)
+
+    if response.status_code == 200:
+        return response.json()['data'].get("subaccount_code")
+    else:
+        print("Failed to update subaccount:", response.json())
+        return None

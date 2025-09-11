@@ -1,43 +1,43 @@
-
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} Are you sure you wanna delete your rental ({{rental.address}})?{% endblock %}
+{% block title %} Are you sure you want to delete {{ rental.address }}? {% endblock %}
+{% block header %}{% endblock %}
+
+<style>
+    .bg-darr{
+        background-color: rgb(209, 221, 232);
+    }
+</style>
 
 {% block body %}
-
 {% if l_user == rental.user.username %}
-    <h1 class="text-center m-5 text-primary">Are you sure you want to <span class="text-danger">delete your rental</span>?</h1>
-    
-    <!-- RENDER THE RENTAL AT A SMALLER SCALE WITH LESS OPACITY -->
-<center>
-    <a href="{% url 'home' %}" class="btn btn-outline-primary m-2">No</a>
-        <a href="{% url 'delete_rental' rental.id %}" class="btn btn-outline-danger m-2">Yes</a>
+<div class="container py-5 my-5 text-dark">
+  <div class="text-center bg-darr p-5 rounded-4 shadow-lg border border-danger-subtle">
+    <h1 class="text-danger fw-bold mb-4">Delete Your Rental?</h1>
+    <p class="fs-5 text-dark mb-5">
+        Rental Address: <span class="text-decoration-underline text-black">{{rental.address}}</span>
+    </p>
+    <p class="fs-5 text-dark mb-5">
+      This action is <span class="text-warning">permanent</span> and cannot be undone. <br>
+      Are you sure you want to proceed?
+    </p>
 
-    <div style='transform: scale(.5); opacity: .7; margin: 0em' class="card bg-dark shadow-lg text-light text-start col-lg-3 rounded-3">
-                        <img src="{{rental.image.url}}" alt="rental image">
-                        <div class="card-body">
-                            <h3 class="card-title">{{rental.address}}</h3>
-                            <p style="font-size: .8rem" class="card-text text-mute">{{rental.details}}</p>
-                        </div>
-                        <div class="card-body border-bottom border-top">
-                            <p class="card-link fs-3 text-success">R{{rental.price}} pm</p>
-                            <a href="{% url 'rental' rental.id %}" class="card-link btn btn-outline-secondary">View more</a>
-                            <a href="#" class="card-link btn btn-success float-end">Interested</a>
-                        </div>
-                        <div class="card-body">
-                            <a href="{% url 'my-profile' rental.user.username %}" class="card-link text-decoration-none"><img style="width: 2em" class="rounded-5" src="{% static 'imgs/profile.png' %}" alt="Profile picture"> {{rental.user.username}}</a>
-                            <a style="font-size: .9rem" href="#" class="float-end card-link btn btn-outline-primary">Follow</a>
-                        </div>
-                    </div>
-</center>
+    <div class="d-flex justify-content-center gap-4">
+      <a onclick="history.back()" class="btn btn-outline-primary px-4 py-2 fs-5">No, Take Me Back</a>
+      <a href="{% url 'delete_rental' rental.id %}" class="btn btn-outline-danger px-4 py-2 fs-5">Yes, Delete</a>
+    </div>
+  </div>
+</div>
 
-        
 {% else %}
-    <br><br>
-    <h1 class="text-center text-danger p-4 px-5">YOU DO NOT HAVE PERMISSION TO ACCESS THIS PAGE!!</h1>
-    <center><a href="{% url 'home' %}" class="btn btn-danger">GET OUT!</a></center>
+    <div class="container text-center my-5 py-5">
+        <div class="alert alert-danger fw-bold fs-4" role="alert">
+            YOU DO NOT HAVE PERMISSION TO ACCESS THIS PAGE!!
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-danger px-4">GET OUT!</a>
+    </div>
 {% endif %}
 
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
+<br><br><br>
 {% endblock %}
+{% block footer %}{% endblock %}

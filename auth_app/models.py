@@ -11,13 +11,17 @@ from django.core.mail import send_mail
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
-    image = models.ImageField(upload_to='profiles', default='profile.png')
+    image = models.ImageField(upload_to='profiles', default='profiles/profile.png')
     address = models.TextField(default="South Africa")
-    phone_number = models.CharField(default="No number")
+    phone_number = models.CharField(max_length=50, default="No number")
     date_modified = models.DateTimeField(auto_now=True)
     account_number = models.CharField(max_length=15, default="NONE")
     bank_code = models.CharField(max_length=10, default="NONE")
-    subaccount_code = models.CharField(max_length=100, blank=True, null=True)
+    subaccount_code = models.CharField(max_length=100, default='NONE')
+    subscription_code = models.CharField(max_length=100, default='NONE')
+    is_premium = models.BooleanField(default=False)
+    rent_spendings = models.DecimalField(max_digits=100, decimal_places=2, default=0)
+    rent_earnings = models.DecimalField(max_digits=100, decimal_places=2, default=0)
 
     def __str__(self):
         return f"{self.user.username} | Profile"
@@ -26,7 +30,7 @@ class Profile(models.Model):
         if (
             self.bank_code != "NONE" and
             self.account_number != "NONE" and
-            not self.subaccount_code
+            self.subaccount_code == "NONE"
         ):
             subaccount = self.create_paystack_subaccount()
             if subaccount:
@@ -59,6 +63,18 @@ class Profile(models.Model):
         if res_data.get("status"):
             return res_data["data"].get("subaccount_code")
         return None
+
+    def delete_paystack_subaccount(self):
+        url = f"https://api.paystack.co/subaccount/{self.subaccount_code}"
+        headers = {
+            "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}"
+        }
+        response = requests.delete(url, headers=headers)
+        if response.status == 200:
+            return True
+        else:
+            print("Failed to delete:", response.json())
+            return False
 
 
 def create_profile(sender, instance, created, **kwargs):

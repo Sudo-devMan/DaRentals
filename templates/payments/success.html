@@ -1,17 +1,151 @@
 
-{% extends 'base.html' %}
-{% block title %} Rental Payment Successful! {% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="{% static 'tf/images/favicon.ico' %}" />
 
-{% block body %}
-<h1 class="blue-underline m-3 text-center text-success">Payment Successful!</h1>
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap5, darentals, login" />
 
-<p class="text-light fs-4 text-center">
-    Your payment was processed successfully.<br>
-    You can download your receipt from <a href="{% url 'my-payments' %}">My Payments</a>.
-</p>
-<br><br><br><br>
-<p class="text-warning fs-5 text-center">
-    <strong>NOTE:</strong> Please show the rental owner your receipt when you move in. It is your proof of payment.
-</p>
-<br><br><br><br><br>
-{% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'tf/fonts/icomoon/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/fonts/flaticon/font/flaticon.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'tf/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/aos.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/style.css' %}" />
+
+    <title>
+      DaRentals | {% block title %} Payment Successful {% endblock %}
+    </title>
+  </head>
+<body>
+    <h1 class="display-1 fw-bold text-primary text-center m-5">DaRentals</h1>
+    <center>
+    <div class="col-lg-4 bg-light shadow-lg rounded-3 p-5 m-3 d-flex justify-content-center" style="flex-direction: column;">
+        <h1 class="text-success">Rent Payment successful</h1>
+        {%for msg in messages %}
+            <p class="text-danger">{{msg}}</p>
+        {% endfor %}
+        <p>Rent payment was successfull. You can see all the historicasl payments you have made in <a href="{% url 'my-payments' %}">'My Payments'</a></p>
+
+        <a href="{% url 'my-payments' %}" class="btn btn-primary col-12 my-2">Go to payments</a>
+    </div>
+    </center>
+    <br><br> <br> <br> <br> <br>  <br><br> <br>  <br><br> <br>  <br><br> <br>  <br>
+
+    <div class="site-footer">
+  <div class="container">
+    <div class="row">
+      
+      <!-- Contact Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Contact</h3>
+          <address>Polokwane, Moletjie</address>
+          <ul class="list-unstyled links">
+            <li><a target="_blank" href="tel://+27678558799">+27 67 855 8799</a></li>
+            <li><a target="_blank" href="tel://+27671389102">+27 67 138 9102</a></li>
+            <li><a target="_blank" href="mailto:darentals.saas@gmail.com">darentals.saas@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sources Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Sources</h3>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <!-- <li><a href="{% url 'people-with-rooms' %}">Landlords</a></li> -->
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+              <li><a href="{% url 'rented-rentals' %}">Rented Rentals</a></li>
+            {% endif %}
+            <li><a href="{% url 'rentals' %}">All Rentals</a></li>
+          </ul>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'rooms' %}">Rooms</a></li>
+            <li><a href="{% url 'apartments' %}">Apartments</a></li>
+            <li><a href="{% url 'student-dorms' %}">Student Dorms</a></li>
+            <li><a href="{% url 'business-properties' %}">Business Properties</a></li>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'my-payments' %}">My Payments</a></li>
+              <!-- <li><a href="{% url 'subscribe' %}">Subscribe</a></li> -->
+              <li><a href="{% url 'subscription_page' %}">Go Premium</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Links Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Links</h3>
+          <ul class="list-unstyled links">
+            <li><a href="{% url 'terms-of-use' %}">Terms of Use</a></li>
+            <!-- <li><a href="{% url 'search' %}">Search</a></li> -->
+            <!-- <li><a href="{% url 'secret_656profiles' %}">Secret Profiles</a></li> -->
+             {% if not user.is_authenticated %}
+            <li><a href="{% url 'sign-up' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% else %}
+            <li><a href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+            {% endif %}
+          </ul>
+
+          <ul class="list-unstyled social">
+            <li><a target="_blank" href="https://www.instagram.com/darentals"><span class="icon-instagram"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-twitter"></span></a></li> -->
+            <li><a target="_blank" href="https://web.facebook.com/profile.php?id=61578741312506" target="_blank"><span class="icon-facebook"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-linkedin"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-pinterest"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-dribbble"></span></a></li> -->
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <p>
+          Copyright &copy;
+          <script>document.write(new Date().getFullYear());</script>
+          . All Rights Reserved. &mdash; Designed with love by
+          <a href="https://untree.co">Untree.co</a>
+        </p>
+        <div>
+          Distributed by
+          <a href="https://themewagon.com/" target="_blank">themewagon</a>
+        </div>
+        <div> <br>
+          Founded by Mphaki N.P
+        </div>
+        <div>
+          Developed by Mashamaite H.M
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+    <script src="{% static 'tf/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'tf/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'tf/js/aos.js' %}"></script>
+    <script src="{% static 'tf/js/navbar.js' %}"></script>
+    <script src="{% static 'tf/js/counter.js' %}"></script>
+    <script src="{% static 'tf/js/custom.js' %}"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+</body>
+</html>

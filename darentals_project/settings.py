@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +32,7 @@ TWILIO_PHONE_NUMBER = config("TWILIO_PHONE_NUMBER") # client gotta pay for south
 
 PAYSTACK_PUBLIC_KEY = config("PAYSTACK_PUBLIC_KEY")
 PAYSTACK_SECRET_KEY = config("PAYSTACK_SECRET_KEY")
+PREMIUM_PRICE = 50
 
 BULKSMS_API_URL = config("BULKSMS_API_URL")
 BULKSMS_USERNAME = config("BULKSMS_USERNAME")
@@ -42,9 +44,9 @@ BULKSMS_API_SECRET = config("BULKSMS_API_SECRET")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [".onrender.app", ".vercel.app", ".now.sh", "127.0.0.1", "localhost"]
 
-CSRF_TRUSTED_ORIGINS = ['https://darentals-project.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://darentals-project.onrender.com', 'https://ebc5caaf904b.ngrok-free.app']
 
 
 # Application definition
@@ -70,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'darentals_project.urls'
@@ -102,6 +105,21 @@ DATABASES = {
     }
 }
 
+# Add PostgreSQL With Railway
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'mydbname',
+#         'USER': 'da user',
+#         'PASSWORD': 'thepassword',
+#         'HOST': 'db url',
+#         'PORT': 'the port'
+#     }
+# }
+# DATABASES['default']['PORT'] = 5432
+# if DATABASES['default'].get('PORT'):
+#     DATABASES['default']['PORT'] = 5432
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -140,6 +158,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

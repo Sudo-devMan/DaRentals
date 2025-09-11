@@ -1,44 +1,304 @@
 
-{% extends 'base.html' %}
-{% block title %} My payments {% endblock %}
+<!-- TEMPLATE -->
+<!-- /*
+* Template Name: Property
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="{% static 'tf/images/favicon.ico' %}" />
 
-{% block body %}
-<h1 class="blue-underline m-3 text-center text-success">Payments History</h1>
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap5" />
 
-<table class="table table-striped table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>Rental</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Receipt</th>
-        </tr>
-    </thead>
-    <tbody>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'tf/fonts/icomoon/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/fonts/flaticon/font/flaticon.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'tf/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/aos.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/style.css' %}" />
+
+    <title>
+      DaRentals | All Rentals
+    </title>
+  </head>
+  <body>
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close">
+          <span class="icofont-close js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+
+
+        <nav class="site-nav">
+      <div class="container">
+        <div class="menu-bg-wrap">
+          <div class="site-navigation">
+            {% if user.is_authenticated %}
+            <a href="{% url 'home' %}" class="fs-sm-6 fs-xs-6 fs-md-5 logo m-0 float-start">DaRentals - 
+              <a href="{% url 'my-profile' user.username %}" class="logo mx-1 float-start">
+                {{user}} {% if user.profile.is_premium %}<a href="#plans" class="text-warning fw-bold">Premium</a>{% else %}<a href="{% url 'subscription_page' %}" class="text-warning fw-bold">Go Premium</a>{% endif %}
+              </a>
+            </a>
+            {% else %}
+            <a href="{% url 'home' %}" class="logo m-0 float-start">DaRentals</a>
+            {% endif %}
+
+            <ul
+              class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end"
+            >
+              <li class="active"><a href="{% url 'home' %}">Home</a></li>
+              <li class="has-children">
+                <a href="{% url 'rentals' %}">Rentals</a>
+                <ul class="dropdown">
+                  {% if user.is_authenticated %}
+                    <li><a href="{% url 'rented-rentals' %}">Rented rentals</a></li>
+                  {% endif %}
+                  <li><a href="{%url 'availabe-rentals' %}">Available rentals</a></li>
+                  <li><a href="{% url 'apartments' %}">Apartmemnts</a></li>
+                  <li><a href="{% url 'business-properties' %}">Business rentals</a></li>
+                  <li class="has-children">
+                    <a href="{% url 'rooms' %}">Rooms</a>
+                    <ul class="dropdown">
+                      <li><a href="{% url 'student-dorms' %}">Student dorms</a></li>
+                      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              {% if user.is_authenticated %}
+                <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+                <li><a href="{% url 'my-profile' user.username %}">Dashboard</a></li>
+                <li><a class="text-danger fw-bold" href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+              {% endif %}
+              <li><a href="{% url 'terms-of-use' %}">Terms of use</a></li>
+            </ul>
+
+            <a
+              href="#"
+              class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
+              data-toggle="collapse"
+              data-target="#main-navbar"
+            >
+              <span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      class="hero page-inner overlay"
+      style="background-image: url({% static 'tf/images/hero_bg_1.jpg' %})"
+    >
+      <div class="container">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-lg-9 text-center mt-5">
+            <h1 class="heading" data-aos="fade-up">My Payments</h1>
+
+            <nav
+              aria-label="breadcrumb"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <ol class="breadcrumb text-center justify-content-center">
+                <li class="breadcrumb-item"><a href="{% url 'home-page' %}">Home</a></li>
+                <li
+                  class="breadcrumb-item active text-white-50"
+                  aria-current="page"
+                >
+                  My Payments
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <div class="text-center m-5">
+            <h1 class="text-black display-6">Historical Payments</h1>
+            <hr>
+        </div>
+
         {% if payments %}
+        <div class="table-responsive my-4">
+    <table class="table table-hover table-striped align-middle shadow-sm rounded-4 mx-auto w-75" style="background-color: #fff;">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th scope="col">Rental</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Status</th>
+                <th scope="col">Date</th>
+                <th scope="col">Receipt</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for payment in payments %}
-                <tr class="bg-secondary">
+                <tr>
                     <td>{{ payment.rental.address }}</td>
                     <td>R {{ payment.rental.price }}</td>
-                    {% if payment.status %}
-                        <td>SUCCESS</td>
-                    {% else %}
-                        <td>UNSUCCESSFUL</td>
-                    {% endif %}
+                    <td>
+                        {% if payment.status %}
+                            <span class="badge rounded-pill text-success text-bg-success">SUCCESS</span>
+                        {% else %}
+                            <span class="badge rounded-pill text-danger text-bg-danger">FAILED</span>
+                        {% endif %}
+                    </td>
                     <td>{{ payment.date|date:"M d, Y H:i" }}</td>
                     <td>
                         {% if payment.status and payment.receipt %}
-                            <a href="{% url 'download' payment.reference %}" target="_blank">Download receipt</a>
+                            <a class="text-decoration-none text-primary fw-medium" href="{% url 'download' payment.reference %}" target="_blank">
+                                Download
+                            </a>
                         {% else %}
-                            -
+                            <span class="text-muted">–</span>
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
-        {% else %}
-            <tr><td colspan="5" class="text-center">No payments found. because you ain't made any</td></tr>
-        {% endif %}
-    </tbody>
-</table>
-{% endblock %}
+        </tbody>
+    </table>
+</div>
+
+    {% else %}<br><br>
+        <br><br><br><br><br><br><br>
+        <div class="no-payments text-center fs-2 mt-5">
+            No payments found — because you ain't made any yet 💸
+        </div>
+        <br><br><br><br><br><br><br>
+    {% endif %}
+
+
+
+    <div class="site-footer">
+  <div class="container">
+    <div class="row">
+      
+      <!-- Contact Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Contact</h3>
+          <address>Polokwane, Moletjie</address>
+          <ul class="list-unstyled links">
+            <li><a target="_blank" href="tel://+27678558799">+27 67 855 8799</a></li>
+            <li><a target="_blank" href="tel://+27671389102">+27 67 138 9102</a></li>
+            <li><a target="_blank" href="mailto:darentals.saas@gmail.com">darentals.saas@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sources Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Sources</h3>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <!-- <li><a href="{% url 'people-with-rooms' %}">Landlords</a></li> -->
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+              <li><a href="{% url 'rented-rentals' %}">Rented Rentals</a></li>
+            {% endif %}
+            <li><a href="{% url 'rentals' %}">All Rentals</a></li>
+          </ul>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'rooms' %}">Rooms</a></li>
+            <li><a href="{% url 'apartments' %}">Apartments</a></li>
+            <li><a href="{% url 'student-dorms' %}">Student Dorms</a></li>
+            <li><a href="{% url 'business-properties' %}">Business Properties</a></li>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'my-payments' %}">My Payments</a></li>
+              <!-- <li><a href="{% url 'subscribe' %}">Subscribe</a></li> -->
+              <li><a href="{% url 'subscription_page' %}">Go Premium</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Links Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Links</h3>
+          <ul class="list-unstyled links">
+            <li><a href="{% url 'terms-of-use' %}">Terms of Use</a></li>
+            <!-- <li><a href="{% url 'search' %}">Search</a></li> -->
+            <!-- <li><a href="{% url 'secret_656profiles' %}">Secret Profiles</a></li> -->
+             {% if not user.is_authenticated %}
+            <li><a href="{% url 'sign-up' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% else %}
+            <li><a href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+            {% endif %}
+          </ul>
+
+          <ul class="list-unstyled social">
+            <li><a target="_blank" href="https://www.instagram.com/darentals"><span class="icon-instagram"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-twitter"></span></a></li> -->
+            <li><a target="_blank" href="https://web.facebook.com/profile.php?id=61578741312506" target="_blank"><span class="icon-facebook"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-linkedin"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-pinterest"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-dribbble"></span></a></li> -->
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <p>
+          Copyright &copy;
+          <script>document.write(new Date().getFullYear());</script>
+          . All Rights Reserved. &mdash; Designed with love by
+          <a href="https://untree.co">Untree.co</a>
+        </p>
+        <div>
+          Distributed by
+          <a href="https://themewagon.com/" target="_blank">themewagon</a>
+        </div>
+        <div> <br>
+          Founded by Mphaki N.P
+        </div>
+        <div>
+          Developed by Mashamaite H.M
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+    <!-- /.site-footer -->
+
+    <!-- Preloader -->
+    <div id="overlayer"></div>
+    <div class="loader">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <script src="{% static 'tf/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'tf/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'tf/js/aos.js' %}"></script>
+    <script src="{% static 'tf/js/navbar.js' %}"></script>
+    <script src="{% static 'tf/js/counter.js' %}"></script>
+    <script src="{% static 'tf/js/custom.js' %}"></script>
+  </body>
+</html>

@@ -12,42 +12,213 @@
 
 
     <title>DaRentals | {% block title %}Rooms, Apartments, Business properties{% endblock %}</title>
+  <style>
+    .glow-on-hover {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .glow-on-hover:hover {
+      color: #0dcaf0 !important;
+      text-shadow: 0 0 8px #0dcaf0, 0 0 15px #0dcaf0;
+      transform: scale(1.05);
+    }
+
+    .glass-glow {
+      background: rgba(18, 141, 255, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      border: 1.5px solid rgba(18, 141, 255, 0.3);
+      box-shadow: 0 0 20px rgba(18, 141, 255, 0.6);
+      color: #e0f0ff;
+      user-select: none;
+    }
+
+    .search-input-glass {
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      border-radius: 50px;
+      padding: 1rem 1.8rem;
+      font-size: 1.2rem;
+      color: #128dff;
+      box-shadow: 0 0 15px rgba(18, 141, 255, 0.7);
+      transition: box-shadow 0.3s ease, background 0.3s ease;
+    }
+
+    .search-input-glass::placeholder {
+      color: rgba(18, 141, 255, 0.5);
+      font-style: italic;
+    }
+
+    .search-input-glass:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 25px #00a8ff, 0 0 40px #128dff;
+      color: #0077ff;
+    }
+
+    .glass-glow-title {
+      background: rgba(18, 141, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      border: 1.5px solid rgba(18, 141, 255, 0.3);
+      box-shadow: 0 0 20px rgba(18, 141, 255, 0.6);
+      padding: 1rem 2rem;
+      display: inline-block;
+      user-select: none;
+    }
+
+    .rental-card {
+      background: rgba(25, 25, 25, 0.8);
+      border: 1px solid rgba(18, 141, 255, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 15px rgba(18, 141, 255, 0.4);
+    }
+
+    .rental-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 30px rgba(18, 141, 255, 0.8);
+    }
+
+    .rental-card-img {
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+      border-bottom: 1px solid rgba(18, 141, 255, 0.3);
+    }
+
+    .rental-card-img:hover {
+      transform: scale(1.1);
+    }
+
+    .rental-card-text {
+      font-size: 0.95rem;
+      color: #afafaf;
+    }
+
+    .rental-view-more {
+      font-weight: 700;
+      color: #128dff;
+      transition: color 0.3s ease;
+      margin-left: 0.25rem;
+    }
+
+    .rental-view-more:hover {
+      color: #0a63b7;
+      text-decoration: underline;
+    }
+
+    .rental-occupied {
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      color: #ffc107 !important;
+    }
+
+    .rental-profile-pic {
+      width: 2.5em;
+      height: 2.5em;
+      object-fit: cover;
+      box-shadow: 0 0 8px #128dffaa;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .rental-profile-pic:hover {
+      box-shadow: 0 0 15px #128dff;
+    }
+
+    /* Buttons inside cards */
+    .rental-card .btn {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .rental-card .btn-outline-secondary:hover {
+      background-color: #128dff;
+      color: #fff;
+      border-color: #128dff;
+    }
+    .search-button{
+  border: none;
+  color: #fff;
+  border-radius: 3em;
+  background-color: #128eff;
+  font-size: 1rem;
+  padding: .6em;
+}
+.searchh{
+  display: inline-block;
+}
+
+.search-component{
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  transform: translateY(500%);
+}
+    </style>
 </head>
 <body>
-    {% block header %}
-    <header class="header">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <div>
-                <a href="{% url 'my-profile' user %}">
-                    <img style="width: 3em; object-fit: cover; height: 3em" class="d-inline-block rounded-circle" src="{{user.profile.image.url}}" alt="profile picture" />
-                </a>
-                <a href="{% url 'my-profile' user %}" class="navbar-brand d-inline-block text-primary">{{user}}</a>
-            </div>
+{% block header %}
+<div style="background-image: url({% static 'imgs/hero_bg_1.jpg' %}); background-repeat: no-repeat; background-size: cover; height: 100vh; z-index: -1;" id="hero-bg">
+<header class="header shadow position-sticky top-0 z-3" style="backdrop-filter: blur(10px); background-color: rgba(33, 37, 41, 0.6); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
 
-            <!-- <a href="{% url 'search' %}" class="text-white ms-auto me-3">
-                <i class="fas fa-search" style="font-size: 1.3em;"></i>
-            </a> -->
+      <!-- Left: User Info -->
+      {% if user.is_authenticated %}
+      <div class="d-flex align-items-center">
+        <a href="{% url 'my-profile' user %}">
+          <img class="rounded-circle border border-2 border-light shadow" style="width: 3em; height: 3em; object-fit: cover;" src="{{ user.profile.image.url }}" alt="Profile Picture">
+        </a>
+        <a href="{% url 'my-profile' user %}" class="navbar-brand ms-2 fw-bold text-light glow-on-hover">{{ user }}</a>
+      </div>
+      {% endif %}
 
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+      <!-- Toggler for mobile -->
+      <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="fa-solid fa-bars"></span>
+      </button>
 
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav">
-                    <a href="{% url 'home-page' %}" class="nav-item nav-link active">Home</a>
-                    <a href="{% url 'people-with-rooms' %}" class="nav-item nav-link">People with rentals</a>
-                    <a href="{% url 'availabe-rentals' %}" class="nav-item nav-link">Available rentals</a>
-                    <a href="{% url 'post-rental' %}" class="nav-item nav-link">Post A room</a>
-                    <a href="{% url 'my-profile' user %}" class="nav-item nav-link">My Profile</a>
-                </div>
-                <div class="navbar-nav ms-auto">
-                    <a href="{% url 'u_sure_u_wanna_logout' %}" class="nav-item nav-link">Logout</a>
-                </div>
-            </div>
+      <!-- Center: Main Nav -->
+      <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+        <div class="navbar-nav gap-2 text-center">
+          <a href="{% url 'home-page' %}" class="nav-item nav-link text-light glow-on-hover">🏠 Home</a>
+          <a href="{% url 'people-with-rooms' %}" class="nav-item nav-link text-light glow-on-hover">👥 Landlords</a>
+          <a href="{% url 'availabe-rentals' %}" class="nav-item nav-link text-light glow-on-hover">📋 Rentals</a>
+          <a href="{% url 'post-rental' %}" class="nav-item nav-link text-light glow-on-hover">📤 Post</a>
+          <a href="{% url 'my-profile' user %}" class="nav-item nav-link text-light glow-on-hover">👤 My Profile</a>
+          {% if user.is_authenticated %}
+          <a href="{% url 'u_sure_u_wanna_logout' %}" class="nav-link fw-bold text-danger glow-on-hover">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="nav-link fw-bold text-success glow-on-hover">Login</a>
+        {% endif %}
         </div>
-    </nav>
+      </div>
+
+      <!-- Right: Auth -->
+      <!-- <div class="d-flex ms-auto">
+        {% if user.is_authenticated %}
+          <a href="{% url 'u_sure_u_wanna_logout' %}" class="nav-link fw-bold text-danger glow-on-hover">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="nav-link fw-bold text-success glow-on-hover">Login</a>
+        {% endif %}
+      </div> -->
+
+    </div>
+  </nav>
 </header>
+
+<div class="search-component">
+  <form>
+    <input class="searchh search-input" type="search" name="search-rentals" placeholder="place, price, etc..">
+    <button class="searchh search-button">Search</button>
+  </form>
+</div>
+
+</div>
 {% endblock %}
 
 {% block body %}
@@ -68,129 +239,101 @@
         });
     </script>
 
-    <div class="hero-title">
-        <h1 class="display-1 text-center" style="color: #128dff">DaRentals</h1>
-        <form method="post" style="transform: scale(1.2);" action="{% url 'search' %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="search"></label>
-                <input class="search-input mb-4" type="text" name="search-rentals" placeholder="search..place, price, etc.">
-            </div>
-        </form>
-    </div>
+<div class="hero-title w-sm-75 glass-glow p-5 rounded-4 shadow-lg mx-auto" style="max-width: 600px;">
+  <h1 class="display-1 text-center text-primary fw-bold">DaRentals</h1>
+  <p class="text-center text-primary mb-4">Sign up and get home'd</p>
+  <form method="post" action="{% url 'search' %}" class="d-flex justify-content-center">
+    {% csrf_token %}
+    <input
+      id="searchInput"
+      type="text"
+      name="search-rentals"
+      placeholder="Search.. place, price, etc."
+      class="form-control search-input-glass"
+      autocomplete="off"
+      aria-label="Search rentals"
+      style="max-width: 450px;"
+    />
+  </form>
+</div>
 
-    <div class="rentals-container container mt-5">
-            <h1 class="text-center fs-2 m-5 text-primary blue-underline">All rentals</h1>
-        {% if rentals %}
-            <div class="row">
-                {% for rental in rentals %}
-                    <div class="col-12 col-sm-6 col-md-4 mb-4">
-                        <div class="card bg-dark text-light shadow-lg h-100 rounded-4 overflow-hidden">
-                            <a href="{{rental.image.url}}"><img src="{{ rental.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="rental image" /></a>
-                            <div class="card-body">
-                                <h4 class="card-title text-white fw-bold">{{ rental.address }}</h4>
-                                <p class="card-text text-light opacity-75" style="font-size: .9rem; color: #afafaf">{{ rental.details|truncatewords:15 }}<a href="{% url 'rental' rental.id %}" style="font-weight: bold">View more</a></p>
-                            </div>
-                            <div class="card-body border-top border-secondary d-flex justify-content-between align-items-center">
-                                <p class="fs-4 text-success mb-0">R{{ rental.price }} pm</p>
-                                {% if rental.is_occupied %}
-                                <p class="fs-6 text-warning mb-0">OCCUPIED</p>
-                                {% endif %}
-                                
-                                <a href="{% url 'rental' rental.id %}" class="btn btn-outline-secondary btn-sm">See</a>
-                            </div>
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <a href="{% url 'my-profile' rental.user.username %}" class="text-decoration-none text-light d-flex align-items-center gap-2">
-                                    <img src="{{ rental.user.profile.image.url }}" class="rounded-circle" style="width: 2.5em; height: 2.5em; object-fit: cover" alt="Profile picture" />
-                                    <span>{{ rental.user.username }}</span>
-                                </a>
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="profile_id" value="{{ rental.user.profile.id }}" />
-                                    {% if profile in rental.user.profile.followed_by.all %}
-                                        <button class="btn btn-success w-100" name="follow" value="unfollow" type="submit">Unfollow</button>
-                                    {% else %}
-                                        <button class="btn btn-outline-primary w-100" name="follow" value="follow" type="submit">Follow</button>
-                                    {% endif %}
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="text-center text-light my-5">
-                <h2 class="mb-3">Eishh... nothing here yet</h2>
-                <p class="fs-5">
-                    No <span class="text-danger">rooms</span>, <span class="text-danger">apartments</span>, or <span class="text-danger">business properties</span> available. If you have one <a href="{% url 'post-rental' %}" class="btn btn-outline-success">post it</a><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                </p>
-            </div>
-            <br><br><br><br><br><br><br><br><br><br>
-        {% endif %}
+<!-- CREATE A FEATURED LANDLORDS TAB RIGHT HERE -->
+
+<div class="rentals-container container mt-5">
+  <center>
+    <h1 class="text-center fs-2 m-5 text-primary blue-underline glass-glow-title">All rentals ({{rentals|length}})</h1>
+  </center>
+  {% if rentals %}
+  <div class="row">
+    {% for rental in rentals %}
+    <div class="col-12 col-sm-6 col-md-4 mb-4">
+      <div class="card rental-card bg-dark text-light shadow-lg h-100 rounded-4 overflow-hidden">
+        <a href="{{ rental.image.url }}">
+          <img src="{{ rental.image.url }}" class="card-img-top rental-card-img" alt="rental image" />
+        </a>
+        <div class="card-body">
+          <h4 class="card-title text-white fw-bold">{{ rental.address }}</h4>
+          <p class="card-text text-light opacity-75 rental-card-text">
+            {{ rental.details|truncatewords:15 }}
+            <a href="{% url 'rental' rental.id %}" class="rental-view-more">View more</a>
+          </p>
+        </div>
+        <div class="card-body border-top border-secondary d-flex justify-content-between align-items-center">
+          <p class="fs-4 text-success mb-0">R{{ rental.price }} pm</p>
+          {% if rental.is_occupied %}
+          <p class="fs-6 text-warning mb-0 rental-occupied">OCCUPIED</p>
+          {% endif %}
+          <a href="{% url 'rental' rental.id %}" class="btn btn-outline-secondary btn-sm">See</a>
+        </div>
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <a href="{% url 'my-profile' rental.user.username %}" class="text-decoration-none text-light d-flex align-items-center gap-2">
+            <img src="{{ rental.user.profile.image.url }}" class="rounded-circle rental-profile-pic" alt="Profile picture" />
+            <span>{{ rental.user.username }}</span>
+          </a>
+          <form method="post" class="d-flex align-items-center">
+            {% csrf_token %}
+            <input type="hidden" name="profile_id" value="{{ rental.user.profile.id }}" />
+            {% if profile in rental.user.profile.followed_by.all %}
+            <button class="btn btn-success w-100" name="follow" value="unfollow" type="submit">Unfollow</button>
+            {% else %}
+            <button class="btn btn-outline-primary w-100" name="follow" value="follow" type="submit">Follow</button>
+            {% endif %}
+          </form>
+        </div>
+      </div>
     </div>
+    {% endfor %}
+  </div><br><br><br><br><br><br>
+  {% else %}
+  <div class="text-center text-light my-5"><br><br><br><br><br><br>
+    <h2 class="mb-3">Eishh... nothing here yet</h2>
+    <p class="fs-5">
+      No <span class="text-danger">rooms</span>, <span class="text-danger">apartments</span>, or
+      <span class="text-danger">business properties</span> available. If you have one
+      <a href="{% url 'post-rental' %}" class="btn btn-outline-success">post it</a>
+    </p>
+  </div><br><br><br><br><br><br><br>
+  {% endif %}
+</div>
+
 
     <br>
     {% endblock %}
 
     {% block footer %}
-<footer class="bg-dark text-white pt-5 pb-4 mt-5">
-    <div class="container text-center text-md-left">
-        <div class="row text-center text-md-left">
-            <!-- Logo and Description -->
-            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-                <h2 class="text-uppercase mb-4 font-weight-bold" style="color: #128eff">DaRentals</h2>
-                <p>Find and rent your next home, office, or business space easily and securely. Connecting landlords with tenants across South Africa (or probably globally).</p>
-            </div>
-
-            <!-- Links -->
-            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-                <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Quick Links</h5>
-                <p><a href="{% url 'home-page' %}" class="text-white" style="text-decoration: none;">Home</a></p>
-                <p><a href="{% url 'availabe-rentals' %}" class="text-white" style="text-decoration: none;">Available rentals</a></p>
-                {% if user.is_authenticated %}
-                    <p><a href="{% url 'my-profile' user.username %}" class="text-white" style="text-decoration: none;">My Profile</a></p>
-                {% endif %}
-
-                <p><a href="{% url 'people-with-rooms' %}" class="text-white" style="text-decoration: none;">Browse Landlords</a></p>
-                <p><a href="{% url 'post-rental' %}" class="text-white" style="text-decoration: none;">Post a Rental</a></p>
-                <p><a href="{% url 'rented-rentals' %}" class="text-white" style="text-decoration: none;">Rented</a></p>
-            </div>
-
-            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-                <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Contact</h5>
-                <p><i class="fas fa-home me-2"></i> Polokwane, South Africa</p>
-                <p><i class="fas fa-phone"></i> <a href="tel:+27671389102" class="text-light text-decoration-none">+27 67 138 9102 (Founder)</a></p>
-                <p><i class="fas fa-phone"></i> <a href="tel:+27720727038" class="text-light text-decoration-none">+27 72 072 7038 (Developer)</a></p>
-                <p><i class="fas fa-email me-2"></i> <a href="mailto:sudo.devman@gmail.com" class="text-light text-decoration-none">Click here to email developer</a></p>
-                <p><i class="fas fa-clock me-2"></i> open wayawaya</p>
-            </div>
-
-            <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mt-3">
-                <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Follow Us</h5>
-                <a href="https://web.facebook.com/people/Nkari-Patrick-Mphaki/61574461494123/?_rdc=1&_rdr#" target="_blank" class="text-white me-4"><i class="fab fa-facebook fa-lg"></i></a>
-                <a href="https://www.instagram.com/dev_____man/" target="_blank" class="text-white me-4"><i class="fab fa-twitter fa-lg"></i></a>
-                <a href="#" class="text-white me-4"><i class="fab fa-instagram fa-lg"></i></a>
-                <a href="#" class="text-white me-4"><i class="fab fa-linkedin fa-lg"></i></a>
-            </div>
-        </div>
-
-        <div class="row d-flex justify-content-center mt-4">
-            <div class="col-md-7 col-lg-8">
-                <p class="text-center" style="font-size: .7rem">
-                    &copy; <span id="copy_year"></span> DaRentals | Founded by Nkari P. Mphaki | Built with ❤️ and ☕ by Hendrick M. Mashamaite
-                </p>
-                <p>
-                    
-                </p>
-                <script type="text/javascript">document.getElementById('copy_year').textContent = new Date().getFullYear()</script>
-            </div>
-        </div>
-    </div>
-</footer>
-
+<!-- I DELETED THE DAMNN FOOTER BECAUSE IT IS THE MOST UGLY AND FUCKKKKKK THAT UGLY ASS SHIT -->
     {% endblock %}
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script>
+      const heroBg = document.getElementById('hero-bg')
+      if (window.location.pathname !== '/home'){
+        heroBg.style.height = '60vh'
+      }
+      if (window.location.pathname === '/post-rental'){
+        heroBg.style.display = 'none'
+      }
+    </script>
 </body>
 </html>

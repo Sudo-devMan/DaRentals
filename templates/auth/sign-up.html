@@ -1,29 +1,170 @@
 
-{% extends 'base.html' %}
 {% load static %}
-{% block title %} Sign up {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="{% static 'tf/images/favicon.ico' %}" />
 
-{% block header %} <h1> </h1> {% endblock %}
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap5, darentals, login" />
 
-{% block body %}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'tf/fonts/icomoon/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/fonts/flaticon/font/flaticon.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'tf/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/aos.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/style.css' %}" />
+
+    <title>
+      DaRentals | {% block title %} Sign up {% endblock %}
+    </title>
+  </head>
+<body>
+    <h1 class="display-1 fw-bold text-primary text-center m-5">DaRentals</h1>
     <center>
-        <h1 class='display-1 m-3 text-primary'>DaRentals</h1>
-        <h1 class="blue-underline">Sign up</h1>
-        {% for msg in messages %}
-            <p class="text-danger">{{msg}}!</p>
+    <div class="col-lg-4 bg-light shadow-lg rounded-3 p-2 m-3 d-flex justify-content-center" style="flex-direction: column;">
+        <h1>Sign Up</h1>
+        {%for msg in messages %}
+            <p class="text-danger">{{msg}}</p>
         {% endfor %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="text-start" for="username">Username:</label>
+                <input required type="text" name="username" class="form-control" placeholder="username...">
+            </div>
+            <div class="form-group">
+                <label class="text-start" for="email">Email:</label>
+                <input required type="email" name="email" class="form-control" placeholder="email...">
+            </div>
+            <div class="form-group">
+                <label class="text-start" for="password1">Password:</label>
+                <input required type="password" name="password1" class="form-control" placeholder="password...">
+            </div>
+            <div class="form-group">
+                <label class="text-start" for="password2">Comfirm Password:</label>
+                <input required type="password" name="password2" class="form-control" placeholder="comfirm password...">
+            </div>
+            <input type="submit" value="Sign Up" class="btn btn-primary my-3 col-6">
+        </form>
+        <a href="{% url 'login' %}">If you already have an account, Click here!</a>
+    </div>
     </center>
-    <form method="post" class="a-form">
-        {% csrf_token %}
-        <input type="text" name="username" class="form-control m-2 input" placeholder="Username...">
-        <input type="email" name="email" class="form-control m-2 input" placeholder="Email...">
-        <input type="password" name="password1" class="form-control m-2 input" placeholder="Password...">
-        <input type="password" name="password2" class="form-control m-2 input" placeholder="Comfirm password">
+    <br><br> <br> <br> <br> <br>  <br><br> <br>  <br><br> <br>  <br><br> <br>  <br>
 
-        <input type="submit" value="Sign up" class="submit btn btn-primary col-12 m-2">
-        <a href="{% url 'login' %}" class="text-center">I already have an account</a>
-    </form>
+    
+<div class="site-footer">
+  <div class="container">
+    <div class="row">
+      
+      <!-- Contact Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Contact</h3>
+          <address>Polokwane, Moletjie</address>
+          <ul class="list-unstyled links">
+            <li><a target="_blank" href="tel://+27678558799">+27 67 855 8799</a></li>
+            <li><a target="_blank" href="tel://+27671389102">+27 67 138 9102</a></li>
+            <li><a target="_blank" href="mailto:darentals.saas@gmail.com">darentals.saas@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
 
-    <!-- TRUST ME... THESE BREAK TAGS ARE IMPORTANT -->
-     <br><br><br><br><br><br>
-{% endblock %}
+      <!-- Sources Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Sources</h3>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <!-- <li><a href="{% url 'people-with-rooms' %}">Landlords</a></li> -->
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+              <!-- <li><a href="{% url 'rented-rentals' %}">Rented Rentals</a></li> -->
+            {% endif %}
+            <li><a href="{% url 'rentals' %}">All Rentals</a></li>
+          </ul>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'rooms' %}">Rooms</a></li>
+            <li><a href="{% url 'apartments' %}">Apartments</a></li>
+            <li><a href="{% url 'student-dorms' %}">Student Dorms</a></li>
+            <li><a href="{% url 'business-properties' %}">Business Properties</a></li>
+            {% if user.is_authenticated %}
+              <!-- <li><a href="{% url 'my-payments' %}">My Payments</a></li> -->
+              <!-- <li><a href="{% url 'subscribe' %}">Subscribe</a></li> -->
+              <!-- <li><a href="{% url 'subscription_page' %}">Go Premium</a></li> -->
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Links Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Links</h3>
+          <ul class="list-unstyled links">
+            <li><a href="{% url 'terms-of-use' %}">Terms of Use</a></li>
+            <!-- <li><a href="{% url 'search' %}">Search</a></li> -->
+            <!-- <li><a href="{% url 'secret_656profiles' %}">Secret Profiles</a></li> -->
+             {% if not user.is_authenticated %}
+            <li><a href="{% url 'sign-up' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% else %}
+            <li><a href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+            {% endif %}
+          </ul>
+
+          <ul class="list-unstyled social">
+            <li><a target="_blank" href="https://www.instagram.com/darentals"><span class="icon-instagram"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-twitter"></span></a></li> -->
+            <li><a target="_blank" href="https://web.facebook.com/profile.php?id=61578741312506" target="_blank"><span class="icon-facebook"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-linkedin"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-pinterest"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-dribbble"></span></a></li> -->
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <p>
+          Copyright &copy;
+          <script>document.write(new Date().getFullYear());</script>
+          . All Rights Reserved. &mdash; Designed with love by
+          <a href="https://untree.co">Untree.co</a>
+        </p>
+        <div>
+          Distributed by
+          <a href="https://themewagon.com/" target="_blank">themewagon</a>
+        </div>
+        <div> <br>
+          Founded by Mphaki N.P
+        </div>
+        <div>
+          Developed by Mashamaite H.M
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    <script src="{% static 'tf/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'tf/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'tf/js/aos.js' %}"></script>
+    <script src="{% static 'tf/js/navbar.js' %}"></script>
+    <script src="{% static 'tf/js/counter.js' %}"></script>
+    <script src="{% static 'tf/js/custom.js' %}"></script>
+</body>
+</html>

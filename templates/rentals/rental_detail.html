@@ -1,74 +1,334 @@
-{% extends 'base.html' %}
+<!-- /*
+* Template Name: Property
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+
+<!DOCTYPE html>
 {% load static %}
-{% block title %}{{ rental.user.username }}'s Rental{% endblock %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="{% static 'tf/images/favicon.ico' %}" />
 
-{% block body %}
-<div class="container my-5">
-    <h1 class="text-center text-primary mb-4 border-bottom pb-2">{{ rental.user.username }}'s Rental</h1>
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap5" />
 
-    <div class="card bg-dark-gradient shadow-lg rounded-4 p-3">
-        <div class="row g-4">
-            <div class="col-lg-6 text-center">
-                <a href="{{ rental.image.url }}">
-                    <img src="{{ rental.image.url }}" alt="Rental Image"
-                         class="img-fluid rounded-4 shadow-sm" style="max-height: 400px;">
-                </a>
-            </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-            <div class="col-lg-6">
-                <div class="h-100 d-flex flex-column justify-content-between">
-                    <div>
-                        <h3 class="text-success">{{ rental.address }}</h3>
-                        <p class="border rounded-3 bg-dark-gradient p-3 bg-light">
-                            <img src="{% static 'icons/info.png' %}" class="me-2 opacity-50" style="height: 1.2em;">
-                            {{ rental.details }}
-                        </p>
-                        <p class="mt-2 opacity-50">{{rental.upload_date|date:"M d, Y H:i"}}</p>
-                    </div>
+    <link rel="stylesheet" href="{% static 'tf/fonts/icomoon/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/fonts/flaticon/font/flaticon.css' %}" />
 
-                    <div class="mt-4">
-                        {% if l_user == rental.user.username %}
-                            <div class="d-grid gap-3">
-                                {% if rental.is_occupied %}
-                                    <button type="button" class="btn btn-warning btn-lg" disabled>
-                                        <i class="fas fa-lock me-2"></i> Occupied
-                                    </button>
-                                {% else %}
-                                    <a href="{% url 'checkout' rental.id %}" class="btn btn-success btn-lg">
-                                        <i class="fas fa-hand-holding-usd me-2"></i> Rent (R {{ rental.price }})
-                                    </a>
-                                {% endif %}
+    <link rel="stylesheet" href="{% static 'tf/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/aos.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}" />
+    <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" /> -->
 
-                                <a href="{% url 'edit-rental' rental.id %}" class="btn btn-secondary btn-lg">
-                                    <i class="fas fa-pen-to-square me-2"></i> Edit
-                                </a>
-
-                                <a href="{% url 'u_sure_u_wanna_delete_your_rental' rental.id %}" class="btn btn-danger btn-lg">
-                                    <i class="fas fa-trash-alt me-2"></i> Delete
-                                </a>
-                            </div>
-                        {% else %}
-                            <div class="d-grid gap-3">
-                                {% if rental.is_occupied %}
-                                    <button type="button" class="btn btn-warning btn-lg" onclick="alert('Bruhh.. it\'s occupied')" disabled>
-                                        <i class="fas fa-lock me-2"></i> Occupied
-                                    </button>
-                                {% else %}
-                                    <a href="{% url 'checkout' rental.id %}" class="btn btn-success btn-lg">
-                                        <i class="fas fa-hand-holding-usd me-2"></i> Rent (R {{ rental.price }})
-                                    </a>
-                                {% endif %}
-
-                                <a href="{% url 'my-profile' rental.user.username %}" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-user-circle me-2"></i> View {{ rental.user.username }}'s Profile
-                                </a>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+    <title>
+      DaRentals | {{rental.address}}
+    </title>
+  </head>
+  <body>
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close">
+          <span class="icofont-close js-menu-toggle"></span>
         </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
     </div>
+
+
+    
+    <nav class="site-nav">
+      <div class="container">
+        <div class="menu-bg-wrap">
+          <div class="site-navigation">
+            {% if user.is_authenticated %}
+            <a href="{% url 'home' %}" class="fs-sm-6 fs-xs-6 fs-md-5 logo m-0 float-start">DaRentals - 
+              <a href="{% url 'my-profile' user.username %}" class="logo mx-1 float-start">
+                <!-- {{user}} {% if user.profile.is_premium %}<a href="#plans" class="text-warning fw-bold">Premium</a>{% else %}<a href="{% url 'subscription_page' %}" class="text-warning fw-bold">Go Premium</a>{% endif %} -->
+              </a>
+            </a>
+            {% else %}
+            <a href="{% url 'home' %}" class="logo m-0 float-start">DaRentals</a>
+            {% endif %}
+
+            <ul
+              class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end"
+            >
+              <li class="active"><a href="{% url 'home' %}">Home</a></li>
+              <li class="has-children">
+                <a href="{% url 'rentals' %}">Rentals</a>
+                <ul class="dropdown">
+                  {% if user.is_authenticated %}
+                    <!-- <li><a href="{% url 'rented-rentals' %}">Rented rentals</a></li> -->
+                  {% endif %}
+                  <!-- <li><a href="{%url 'availabe-rentals' %}">Available rentals</a></li> -->
+                  <li><a href="{% url 'apartments' %}">Apartmemnts</a></li>
+                  <li><a href="{% url 'business-properties' %}">Business rentals</a></li>
+                  <li class="has-children">
+                    <a href="{% url 'rooms' %}">Rooms</a>
+                    <ul class="dropdown">
+                      <li><a href="{% url 'student-dorms' %}">Student dorms</a></li>
+                      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              {% if user.is_authenticated %}
+                <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+                <li><a href="{% url 'my-profile' user.username %}">Dashboard</a></li>
+                <li><a class="text-danger fw-bold" href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+              {% endif %}
+              <li><a href="{% url 'terms-of-use' %}">Terms of use</a></li>
+            </ul>
+
+            <a
+              href="#"
+              class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
+              data-toggle="collapse"
+              data-target="#main-navbar"
+            >
+              <span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      class="hero page-inner overlay"
+      style="background-image: url({{rental.images.first.image.url}})"
+    >
+      <div class="container">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-lg-9 text-center mt-5">
+            <h1 class="heading" data-aos="fade-up">
+              {{rental.address}}
+            </h1>
+
+            <nav
+              aria-label="breadcrumb"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <ol class="breadcrumb text-center justify-content-center">
+                <li class="breadcrumb-item"><a href="{% url 'home-page' %}">Home</a></li>
+                <li class="breadcrumb-item">
+                  <a href="{% url 'rentals' %}">Rentals</a>
+                </li>
+                <li
+                  class="breadcrumb-item active text-white-50"
+                  aria-current="page"
+                >
+                  {{rental.address}}
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col-lg-7">
+            <div class="img-property-slide-wrap">
+              <div class="img-property-slide">
+                {% for image in rental.images.all %}
+                <a href="{{image.image.url}}"><img src="{{image.image.url}}" alt="Image" class="img-fluid" /></a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <h2 class="heading text-primary">{{rental.address}}</h2>
+            <p class="meta">{{rental.user.profile.address}}</p>
+            <p class="text-black-50">{{rental.details}}</p>
+            {% if rental.type_of_rental == 'room' %}
+              <em>Room</em>
+            {% elif rental.type_of_rental == 'apartment' %}
+              <em>Apartment</em>
+            {% elif rental.type_of_rental == 'student_dorm' %}
+              <em>Student dorm room</em>
+            {% elif rental.type_of_rental == 'business_property' %}
+              <em>Business Property</em>
+            {% endif %}
+            <div class="specs d-flex mb-4">
+              <span class="d-block d-flex align-items-center me-3">
+                <span class="icon-bed me-2"></span>
+                <span class="caption">{{rental.beds}} beds</span>
+              </span>
+              <span class="d-block d-flex align-items-center">
+                <span class="icon-bath me-2"></span>
+                <span class="caption">{{rental.baths}} baths</span>
+              </span>
+            </div>
+            <p class="text-black-50">{{rental.upload_date}}</p>
+            {% if user.is_authenticated %}
+              {% if user.username == rental.user.username %}
+                  <a href="{% url 'edit-rental' rental.id %}"><button class="btn btn-dark">Edit</button></a>
+              {% else %}
+                {% if rental.is_occupied %}
+                  <button class="btn btn-warning"><span class="fa-solid fa-lock"></span> OCCUPIED</button>
+                {% else %}
+                  <a href="{% url 'checkout' rental.id %}"><button class="btn btn-success"><span class="fa-solid fa-hand-holding-usd"></span> Rent</button></a>
+                {% endif %}
+              {% endif %}
+            {% else %}
+              <a href="{% url 'login' %}" class="btn btn-warning px-2 py-2">Login to rent this rental</a>
+            {% endif %}
+
+            <div class="d-block agent-box p-5">
+              <a href="{% url 'my-profile' rental.user.username %}"><div class="img mb-4">
+                <img
+                  src="{{rental.user.profile.image.url}}"
+                  alt="Image"
+                  class="img-fluid"
+                />
+              </div></a>
+              <div class="text">
+                <h3 class="mb-0">{{rental.user.username}}</h3>
+                <div class="meta mb-3">Landlord</div>
+                <p>{{rental.user.address}}</p>
+                <ul class="list-unstyled social dark-hover d-flex">
+                  <li class="me-1">
+                    <a href="{% url 'my-profile' rental.user.username %}"><span class="fa-solid fa-person"></span></a>
+                  </li>
+                  <li class="me-1">
+                    <a href="{% url 'my-profile' rental.user.username %}"><span class="fa-solid fa-home"></span></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+<div class="site-footer">
+  <div class="container">
+    <div class="row">
+      
+      <!-- Contact Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Contact</h3>
+          <address>Polokwane, Moletjie</address>
+          <ul class="list-unstyled links">
+            <li><a target="_blank" href="tel://+27678558799">+27 67 855 8799</a></li>
+            <li><a target="_blank" href="tel://+27671389102">+27 67 138 9102</a></li>
+            <li><a target="_blank" href="mailto:darentals.saas@gmail.com">darentals.saas@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sources Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Sources</h3>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <!-- <li><a href="{% url 'people-with-rooms' %}">Landlords</a></li> -->
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+              <!-- <li><a href="{% url 'rented-rentals' %}">Rented Rentals</a></li> -->
+            {% endif %}
+            <li><a href="{% url 'rentals' %}">All Rentals</a></li>
+          </ul>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'rooms' %}">Rooms</a></li>
+            <li><a href="{% url 'apartments' %}">Apartments</a></li>
+            <li><a href="{% url 'student-dorms' %}">Student Dorms</a></li>
+            <li><a href="{% url 'business-properties' %}">Business Properties</a></li>
+            {% if user.is_authenticated %}
+              <!-- <li><a href="{% url 'my-payments' %}">My Payments</a></li> -->
+              <!-- <li><a href="{% url 'subscribe' %}">Subscribe</a></li> -->
+              <!-- <li><a href="{% url 'subscription_page' %}">Go Premium</a></li> -->
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Links Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Links</h3>
+          <ul class="list-unstyled links">
+            <li><a href="{% url 'terms-of-use' %}">Terms of Use</a></li>
+            <!-- <li><a href="{% url 'search' %}">Search</a></li> -->
+            <!-- <li><a href="{% url 'secret_656profiles' %}">Secret Profiles</a></li> -->
+             {% if not user.is_authenticated %}
+            <li><a href="{% url 'sign-up' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% else %}
+            <li><a href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+            {% endif %}
+          </ul>
+
+          <ul class="list-unstyled social">
+            <li><a target="_blank" href="https://www.instagram.com/darentals"><span class="icon-instagram"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-twitter"></span></a></li> -->
+            <li><a target="_blank" href="https://web.facebook.com/profile.php?id=61578741312506" target="_blank"><span class="icon-facebook"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-linkedin"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-pinterest"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-dribbble"></span></a></li> -->
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <p>
+          Copyright &copy;
+          <script>document.write(new Date().getFullYear());</script>
+          . All Rights Reserved. &mdash; Designed with love by
+          <a href="https://untree.co">Untree.co</a>
+        </p>
+        <div>
+          Distributed by
+          <a href="https://themewagon.com/" target="_blank">themewagon</a>
+        </div>
+        <div> <br>
+          Founded by Mphaki N.P
+        </div>
+        <div>
+          Developed by Mashamaite H.M
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
-<br><br>
-{% endblock %}
+    <!-- /.site-footer -->
+
+    <!-- Preloader -->
+    <!-- <div id="overlayer"></div>
+    <div class="loader">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div> -->
+
+    <script src="{% static 'tf/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'tf/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'tf/js/aos.js' %}"></script>
+    <script src="{% static 'tf/js/navbar.js' %}"></script>
+    <script src="{% static 'tf/js/counter.js' %}"></script>
+    <script src="{% static 'tf/js/custom.js' %}"></script>
+  </body>
+</html>

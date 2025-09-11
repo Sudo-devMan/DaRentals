@@ -1,0 +1,289 @@
+<!-- 
+* Template Name: Property (Modified for Terms of Use)
+* Template Author: Untree.co
+* License: https://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="{% static 'tf/images/favicon.ico' %}" />
+
+    <meta name="description" content="DaRentals Terms of Use" />
+    <meta name="keywords" content="rentals, property, housing, terms of use, DaRentals" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'tf/fonts/icomoon/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/fonts/flaticon/font/flaticon.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'tf/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/aos.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/style.css' %}" />
+    <title>DaRentals | Terms of Use</title>
+  </head>
+  <body>
+    <!-- Mobile Menu -->
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close">
+          <span class="icofont-close js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+
+    <!-- Navigation -->
+    
+    <nav class="site-nav">
+      <div class="container">
+        <div class="menu-bg-wrap">
+          <div class="site-navigation">
+            {% if user.is_authenticated %}
+            <a href="{% url 'home' %}" class="fs-sm-6 fs-xs-6 fs-md-5 logo m-0 float-start">DaRentals - 
+              <a href="{% url 'my-profile' user.username %}" class="logo mx-1 float-start">
+                <!-- {{user}} {% if user.profile.is_premium %}<a href="#plans" class="text-warning fw-bold">Premium</a>{% else %}<a href="{% url 'subscription_page' %}" class="text-warning fw-bold">Go Premium</a>{% endif %} -->
+              </a>
+            </a>
+            {% else %}
+            <a href="{% url 'home' %}" class="logo m-0 float-start">DaRentals</a>
+            {% endif %}
+
+            <ul
+              class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end"
+            >
+              <li class="active"><a href="{% url 'home' %}">Home</a></li>
+              <li class="has-children">
+                <a href="{% url 'rentals' %}">Rentals</a>
+                <ul class="dropdown">
+                  {% if user.is_authenticated %}
+                    <!-- <li><a href="{% url 'rented-rentals' %}">Rented rentals</a></li> -->
+                  {% endif %}
+                  <!-- <li><a href="{%url 'availabe-rentals' %}">Available rentals</a></li> -->
+                  <li><a href="{% url 'apartments' %}">Apartmemnts</a></li>
+                  <li><a href="{% url 'business-properties' %}">Business rentals</a></li>
+                  <li class="has-children">
+                    <a href="{% url 'rooms' %}">Rooms</a>
+                    <ul class="dropdown">
+                      <li><a href="{% url 'student-dorms' %}">Student dorms</a></li>
+                      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              {% if user.is_authenticated %}
+                <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+                <li><a href="{% url 'my-profile' user.username %}">Dashboard</a></li>
+                <li><a class="text-danger fw-bold" href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+              {% endif %}
+              <li><a href="{% url 'terms-of-use' %}">Terms of use</a></li>
+            </ul>
+
+            <a
+              href="#"
+              class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
+              data-toggle="collapse"
+              data-target="#main-navbar"
+            >
+              <span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero page-inner overlay" style="background-image: url({% static 'tf/images/hero_bg_1.jpg' %})">
+      <div class="container">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-lg-9 text-center mt-5">
+            <h1 class="heading" data-aos="fade-up">Terms of Use</h1>
+            <nav aria-label="breadcrumb" data-aos="fade-up" data-aos-delay="200">
+              <ol class="breadcrumb text-center justify-content-center">
+                <li class="breadcrumb-item"><a href="{% url 'home-page' %}">Home</a></li>
+                <li class="breadcrumb-item active text-white-50" aria-current="page">Terms of Use</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms of Use Section -->
+    <div class="section">
+      <div class="container">
+        <div class="row mb-5 align-items-center">
+          <div class="col-lg-8 mx-auto">
+            <h2 class="font-weight-bold text-primary mb-4">DaRentals Terms of Use</h2>
+            <p><strong>Effective Date:</strong> {{ today|default:"August 2025" }}</p>
+            <p>Welcome to <strong>DaRentals</strong>. By using this website, you agree to comply with and be bound by the following Terms of Use. Please read carefully.</p>
+
+            <h4 class="mt-4">1. About DaRentals</h4>
+            <p>DaRentals is a property rental platform enabling landlords to list and manage rentals while tenants can browse and find their next rental homes.</p>
+            <ul>
+              <li><strong>Developer:</strong> Mashamaite H.M</li>
+              <li><strong>Founder:</strong> Mphaki N.P</li>
+              <li><strong>Contact:</strong> <a href="mailto:darentals.saas@gmail.com">darentals.saas@gmail.com</a></li>
+            </ul>
+
+            <h4 class="mt-4">2. Eligibility</h4>
+            <p>Users must be at least 18 years old or have parental/guardian consent to use DaRentals. You must provide accurate details when registering.</p>
+
+            <!-- <h4 class="mt-4">3. Premium Features & Payments</h4>
+            <p>DaRentals provides free features as well as <strong>premium subscription services</strong> such as advanced search, landlord following, and ad-free browsing.</p>
+            <p>All payments are processed securely via <strong>Paystack</strong>. By subscribing, you agree to Paystack’s <a href="https://paystack.com/terms" target="_blank">Terms</a> and <a href="https://paystack.com/privacy" target="_blank">Privacy Policy</a>. DaRentals does not store card details.</p>
+
+            <h4 class="mt-4">4. Refund Policy</h4>
+            <p>Subscription payments are non-refundable except where required by law.</p> -->
+
+            <h4 class="mt-4">3. User Responsibilities</h4>
+            <p>When using DaRentals, you agree not to:</p>
+            <ul>
+              <li>Provide false or misleading property information</li>
+              <li>Engage in illegal activities</li>
+              <li>Misuse premium features or bypass payments</li>
+            </ul>
+
+            <h4 class="mt-4">4. Content & Intellectual Property</h4>
+            <p>All platform content (logo, design, code) is the property of DaRentals. Users retain ownership of uploaded property images and descriptions but grant DaRentals a license to display them.</p>
+
+            <h4 class="mt-4">5. Termination</h4>
+            <p>We reserve the right to suspend or terminate accounts violating these Terms.</p>
+
+            <h4 class="mt-4">6. Limitation of Liability</h4>
+            <p>DaRentals is not responsible for disputes between landlords and tenants. Our liability is limited to the amount you paid for premium services.</p>
+
+            <h4 class="mt-4">7. Amendments</h4>
+            <p>We may update these Terms of Use from time to time. Continued use of the platform constitutes agreement to the updated terms.</p>
+
+            <h4 class="mt-4">8. Contact</h4>
+            <p>For any queries, contact us at: <a href="mailto:darentals.saas@gmail.com">darentals.saas@gmail.com</a></p>
+            <p><a target="_blank" href="tel://+27678558799">+27 67 855 8799</a> - Developer (IT Support and feature recommendations)</p>
+            <p><a target="_blank" href="tel://+27671389102">+27 67 138 9102</a> - Founder</p>
+            <p><a target="_blank" href="https://it-circuit-pricing.netlify.app">IT Circuit</a> - Developer Short Website</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+
+    
+<div class="site-footer">
+  <div class="container">
+    <div class="row">
+      
+      <!-- Contact Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Contact</h3>
+          <address>Polokwane, Moletjie</address>
+          <ul class="list-unstyled links">
+            <li><a target="_blank" href="tel://+27678558799">+27 67 855 8799</a></li>
+            <li><a target="_blank" href="tel://+27671389102">+27 67 138 9102</a></li>
+            <li><a target="_blank" href="mailto:darentals.saas@gmail.com">darentals.saas@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sources Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Sources</h3>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <!-- <li><a href="{% url 'people-with-rooms' %}">Landlords</a></li> -->
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+              <!-- <li><a href="{% url 'rented-rentals' %}">Rented Rentals</a></li> -->
+            {% endif %}
+            <li><a href="{% url 'rentals' %}">All Rentals</a></li>
+          </ul>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'rooms' %}">Rooms</a></li>
+            <li><a href="{% url 'apartments' %}">Apartments</a></li>
+            <li><a href="{% url 'student-dorms' %}">Student Dorms</a></li>
+            <li><a href="{% url 'business-properties' %}">Business Properties</a></li>
+            {% if user.is_authenticated %}
+              <!-- <li><a href="{% url 'my-payments' %}">My Payments</a></li> -->
+              <!-- <li><a href="{% url 'subscribe' %}">Subscribe</a></li> -->
+              <!-- <li><a href="{% url 'subscription_page' %}">Go Premium</a></li> -->
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Links Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Links</h3>
+          <ul class="list-unstyled links">
+            <li><a href="{% url 'terms-of-use' %}">Terms of Use</a></li>
+            <!-- <li><a href="{% url 'search' %}">Search</a></li> -->
+            <!-- <li><a href="{% url 'secret_656profiles' %}">Secret Profiles</a></li> -->
+             {% if not user.is_authenticated %}
+            <li><a href="{% url 'sign-up' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% else %}
+            <li><a href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+            {% endif %}
+          </ul>
+
+          <ul class="list-unstyled social">
+            <li><a target="_blank" href="https://www.instagram.com/darentals"><span class="icon-instagram"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-twitter"></span></a></li> -->
+            <li><a target="_blank" href="https://web.facebook.com/profile.php?id=61578741312506" target="_blank"><span class="icon-facebook"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-linkedin"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-pinterest"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-dribbble"></span></a></li> -->
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <p>
+          Copyright &copy;
+          <script>document.write(new Date().getFullYear());</script>
+          . All Rights Reserved. &mdash; Designed with love by
+          <a href="https://untree.co">Untree.co</a>
+        </p>
+        <div>
+          Distributed by
+          <a href="https://themewagon.com/" target="_blank">themewagon</a>
+        </div>
+        <div> <br>
+          Founded by Mphaki N.P
+        </div>
+        <div>
+          Developed by Mashamaite H.M
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+    <!-- Preloader -->
+    <div id="overlayer"></div>
+    <div class="loader">
+      <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>
+    </div>
+
+    <script src="{% static 'tf/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'tf/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'tf/js/aos.js' %}"></script>
+    <script src="{% static 'tf/js/navbar.js' %}"></script>
+    <script src="{% static 'tf/js/counter.js' %}"></script>
+    <script src="{% static 'tf/js/custom.js' %}"></script>
+  </body>
+</html>

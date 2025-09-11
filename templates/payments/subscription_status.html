@@ -1,0 +1,69 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="{% static 'tf/images/favicon.ico' %}" />
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap5, darentals, login" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'tf/fonts/icomoon/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/fonts/flaticon/font/flaticon.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'tf/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/aos.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/style.css' %}" />
+
+    <title>
+      DaRentals | {% block title %} Go premium (ss.html) {% endblock %}
+    </title>
+  </head>
+<body>
+    <h1 class="display-1 fw-bold text-primary text-center m-5">DaRentals</h1>
+    <center>
+        <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-4 text-center">
+                <h2 class="mb-3">Go Premium</h2>
+                <p class="text-muted">
+                    Unlock premium features and enjoy the full DaRentals experience. 
+                    <br> Premium is <strong>R50 / month</strong>.
+                </p>
+                <form action="{% url 'subscribe' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-lg mt-3 px-4">
+                    Subscribe Now
+                    </button>
+                </form>
+                <p class="mt-3 small text-muted">
+                    Secure payments powered by Paystack.
+                </p>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </center>
+    <br><br> <br> <br> <br> <br>  <br><br> <br>  <br><br> <br>  <br><br> <br>  <br>
+    <script src="{% static 'tf/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'tf/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'tf/js/aos.js' %}"></script>
+    <script src="{% static 'tf/js/navbar.js' %}"></script>
+    <script src="{% static 'tf/js/counter.js' %}"></script>
+    <script src="{% static 'tf/js/custom.js' %}"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+</body>
+</html>

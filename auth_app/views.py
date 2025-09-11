@@ -7,13 +7,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from rentals.models import Rental
 from datetime import datetime
+from base.utils import update_paystack_subbaccount
 
 @login_required(login_url='login')
 def my_profile(r, username):
     l_user = User.objects.get(username=username)
     rentals = Rental.objects.filter(user=l_user)
-    profile = Profile.objects.get(user=l_user)
+    profile = get_object_or_404(Profile, user=l_user)
     logged_in_user = r.user.username
+    wegood = False
+    if logged_in_user == profile.user.username:
+        wegood = True
 
     if r.method == 'POST':
         current_user_profile = r.user.profile
@@ -29,6 +33,7 @@ def my_profile(r, username):
         'l_user': l_user,
         'logged_in_user': logged_in_user,
         'profile': profile,
+        'wegood': wegood
     }
     return render(r, 'auth/my-profile.html', context)
 
@@ -38,6 +43,8 @@ def edit_profile(r, username):
     l_user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=l_user)
     wegood = False
+    old_acc = profile.account_number
+    old_bank = profile.bank_code
 
     if r.user.username == l_user.username:
         wegood = True
@@ -58,6 +65,18 @@ def edit_profile(r, username):
         profile.date_modified = datetime.now()
         profile.account_number = r.POST.get('account_number')
         profile.bank_code = r.POST.get('bank_code')
+
+        # if profile.subaccount_code != "NONE":
+        #     if old_acc != profile.account_number or old_bank != profile.bank_code:
+        #         subaccount_code = update_paystack_subbaccount(profile.subaccount_code, profile.bank_code, profile.account_number)
+        #         if subaccount_code:
+        #             profile.account_number = r.POST.get('account_number')
+        #             profile.bank_code = r.POST.get('bank_code')
+        #             profile.subaccount_code = subaccount_code
+        #             messages.info(r, "Successfully updated bank details")
+        #         else:
+        #             messages.info(r, "Failed to update bank details. Try again.")
+
         profile.save()
         messages.success(r, f'Changes saved! ({datetime.now()})')
         return render(r, 'auth/edit-my-profile.html', {
@@ -72,7 +91,6 @@ def edit_profile(r, username):
         'wegood': wegood,
     })
 
-@login_required(login_url='login')
 def why_not_to_unfollow_myself(r):
     return render(r, 'auth/why_not_to_unfollow_myself.html')
 
@@ -111,7 +129,7 @@ def login(r):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            messages.info(r, "Incorrect username!!")
+            messages.info(r, "Username incorrect or you don't have an account")
             return redirect('login')
 
         login_user = authenticate(username=username, password=password)

@@ -1,88 +1,334 @@
 
-{% extends 'base.html' %}
 {% load static %}
-{% block title %} Edit my profile {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="{% static 'tf/images/favicon.ico' %}" />
 
-{% block body %}
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap5, darentals, login" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'tf/fonts/icomoon/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/fonts/flaticon/font/flaticon.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'tf/css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/aos.css' %}" />
+    <link rel="stylesheet" href="{% static 'tf/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
+
+    <title>
+      DaRentals | {% block title %} Edit your account details {% endblock %}
+    </title>
+  </head>
+<body style="background-image: linear-gradient(45deg, rgb(238, 238, 253), rgb(236, 255, 241));">
+      <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close">
+          <span class="icofont-close js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+
+        <nav class="site-nav">
+      <div class="container">
+        <div class="menu-bg-wrap">
+          <div class="site-navigation">
+            {% if user.is_authenticated %}
+            <a href="{% url 'home' %}" class="fs-sm-6 fs-xs-6 fs-md-5 logo m-0 float-start">DaRentals - 
+              <a href="{% url 'my-profile' user.username %}" class="logo mx-1 float-start">
+                {{user}} {% if user.profile.is_premium %}<a href="#plans" class="text-warning fw-bold">Premium</a>{% else %}<a href="{% url 'subscription_page' %}" class="text-warning fw-bold">Go Premium</a>{% endif %}
+              </a>
+            </a>
+            {% else %}
+            <a href="{% url 'home' %}" class="logo m-0 float-start">DaRentals</a>
+            {% endif %}
+
+            <ul
+              class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end"
+            >
+              <li class="active"><a href="{% url 'home' %}">Home</a></li>
+              <li class="has-children">
+                <a href="{% url 'rentals' %}">Rentals</a>
+                <ul class="dropdown">
+                  {% if user.is_authenticated %}
+                    <!-- <li><a href="{% url 'rented-rentals' %}">Rented rentals</a></li> -->
+                  {% endif %}
+                  <!-- <li><a href="{%url 'availabe-rentals' %}">Available rentals</a></li> -->
+                  <li><a href="{% url 'apartments' %}">Apartmemnts</a></li>
+                  <li><a href="{% url 'business-properties' %}">Business rentals</a></li>
+                  <li class="has-children">
+                    <a href="{% url 'rooms' %}">Rooms</a>
+                    <ul class="dropdown">
+                      <li><a href="{% url 'student-dorms' %}">Student dorms</a></li>
+                      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              {% if user.is_authenticated %}
+                <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+                <li><a href="{% url 'my-profile' user.username %}">Dashboard</a></li>
+                <li><a class="text-danger fw-bold" href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+              {% endif %}
+              <li><a href="{% url 'terms-of-use' %}">Terms of use</a></li>
+            </ul>
+
+            <a
+              href="#"
+              class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
+              data-toggle="collapse"
+              data-target="#main-navbar"
+            >
+              <span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      class="hero page-inner overlay"
+      style="background-image: url({{profile.image.url}})"
+    >
+      <div class="container">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-lg-9 text-center mt-5">
+            <h1 class="heading" data-aos="fade-up">Edit Profile</h1>
+
+            <nav
+              aria-label="breadcrumb"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <ol class="breadcrumb text-center justify-content-center">
+                <li class="breadcrumb-item"><a href="{% url 'home-page' %}">Home</a></li>
+                <li
+                  class="breadcrumb-item active text-white-50"
+                  aria-current="page"
+                >
+                  Edit Profile
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
 {% if wegood %}
-    <h1 class="blue-underline text-center">Edit your profile</h1>
-        <center><div class="profile-picture">
-            <a href="{{profile.image.url}}"><img class="m-3 rounded-4" style='width: 15em' src="{{profile.image.url}}" alt="profile picture"></a>
-        </div></center>
+<div class="container py-5">
+  <center>
+    <a href="{{ profile.image.url }}">
+      <img class="m-3 rounded-circle border-primary col-4" style="object-fit: cover;" src="{{ profile.image.url }}" alt="profile picture">
+    </a>
+  </center>
 
+  <form method="POST" enctype="multipart/form-data" class="shadow-lg bg-light p-4 mx-auto w-100" style="max-width: 800px;">
+    {% csrf_token %}
+    {% for msg in messages %}
+      <p class="text-success text-center fw-semibold">{{ msg }}</p>
+    {% endfor %}
 
+    <!-- Profile Image Upload -->
+    <div class="form-group m-3">
+      <label for="profile_image">Change profile picture:</label>
+      <div class="border rounded-3 p-3 text-center bg-dark bg-opacity-25">
+        <label class="form-label opacity-75">Click to upload a new profile image</label>
+        <input class="form-control" type="file" name="profile_image" accept="image/*">
+      </div>
+    </div>
 
-    <form class="a-form" method="POST" enctype="multipart/form-data">
-
-        {% for msg in messages %}
-            <p class="text-success m-3 text-center">{{msg}}</p>
-        {% endfor %}
-
-        {% csrf_token %}
-        <div class="form-group m-2">
-            <label for="profile_image">Change profile picture: <span class="opacity-25">(press Choose file to choose a new profile picture)</span></label>
-            <input class="input form-control" type="file" name="profile_image">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group m-3">
+          <label for="username">Your username:</label>
+          <input value="{{ profile.user.username }}" class="form-control" type="text" name="username" placeholder="Username...">
         </div>
+      </div>
 
-        <div class="form-group m-2">
-            <label for="username">Your username:</label>
-            <input value="{{profile.user.username}}" class="input form-control" type="text" name="username" placeholder="username...">
+      <div class="col-md-6">
+        <div class="form-group m-3">
+          <label for="phone_number">Phone number <span class="text-danger">*</span>:</label>
+          <input required value="{{ profile.phone_number }}" class="form-control" type="tel" name="phone_number" placeholder="Phone number...">
         </div>
+      </div>
+    </div>
 
-        <div class="form-group m-2">
-            <label for="address">Your address:</label>
-            <textarea name="address" class="input form-control" placeholder="Address: Country, Province, City, Town/Suburb, etc.">{{profile.address}}</textarea>
+    <div class="form-group m-3">
+      <label for="address">Your address:</label>
+      <textarea required name="address" class="form-control" rows="3" placeholder="Address: Country, Province, City, etc.">{{ profile.address }}</textarea>
+    </div>
+
+    {% if profile.bank_code == "Bruhhhhh" %}
+      <p class="text-warning text-center m-2">
+        <strong class="text-danger">NOTE:</strong> Enter your account number and bank to enable receiving rent payments.
+      </p>
+    {% endif %}
+
+    <!-- <div class="row">
+      <div class="col-md-6">
+        <div class="form-group m-3">
+          <label for="account_number">Bank account number:</label>
+          <input value="{{ profile.account_number }}" class="form-control" type="text" name="account_number" placeholder="Account number">
         </div>
+      </div>
 
-        <div class="form-group m-2">
-            <label for="phone_number">Your phone number (IT'S A MUST):</label>
-            <input required value="{{profile.phone_number}}" class="input form-control" type="number" name="phone_number" placeholder="phone number...">
+      <div class="col-md-6">
+        <div class="form-group m-3">
+          <label for="bank_code">Select your bank:</label>
+          <select class="form-control" name="bank_code">
+            {% if profile.bank_code == "NONE" %}
+              <option value="">Select your bank</option>
+            {% endif %}
+            <option value="632005" {% if profile.bank_code == "632005" %}selected{% endif %}>ABSA</option>
+            <option value="470010" {% if profile.bank_code == "470010" %}selected{% endif %}>Capitec Bank</option>
+            <option value="250655" {% if profile.bank_code == "250655" %}selected{% endif %}>FNB</option>
+            <option value="051001" {% if profile.bank_code == "051001" %}selected{% endif %}>Standard Bank</option>
+            <option value="198765" {% if profile.bank_code == "198765" %}selected{% endif %}>Nedbank</option>
+            <option value="678910" {% if profile.bank_code == "678910" %}selected{% endif %}>TymeBank</option>
+          </select>
         </div>
+      </div>
+    </div>
+ -->
+    <div class="text-center my-4">
+      <button type="submit" class="btn btn-primary px-4 py-2">
+        <i class="fas fa-save me-2"></i>Save changes
+      </button>
+    </div>
+    
+  </form>
 
-        {% if profile.bank_code == "NONE" %}
-            <p class="m-2 text-center text-warning"><span class="text-danger mx-1">NOTE:</span>If you want to share your rentals please enter your account number and select your bank so that you can receive the rent money</p>
-        {% endif %}
+  <!-- Delete Account -->
+  <div class="text-center my-4">
+    <a href="{% url 'u_sure_u_wanna_delete_your_account' profile.user.id %}">
+      <button class="btn btn-danger">
+        Delete account
+        <img src="{% static 'icons/delete.png' %}" class="ms-2 opacity-50" style="width: 1.2em;">
+      </button>
+    </a>
+  </div>
+</div>
 
-        <div class="form-group m-2">
-            <label for="phone_number">Your BANK account number for payments:</label>
-            <input value="{{profile.account_number}}" class="input form-control" type="number" name="account_number" placeholder="account number">
-        </div>
-
-        <style>
-            select option{
-                background-color: #212529;
-                color: #fff;
-            }
-        </style>
-
-        <div class="form-group m-2">
-            <label for="bank_code">Your BANK for payments:</label>
-            <select class="form-control input" name="bank_code">
-                {% if profile.bank_code == "NONE" %}
-                    <option value="{{profile.bank_code}}">Select your bank (click here)</option>
-                {% endif %}
-                <option value="632005" {% if profile.bank_code == "632005" %}selected{% endif %}>ABSA</option>
-                <option value="470010" {% if profile.bank_code == "470010" %}selected{% endif %}>Capitec Bank</option>
-                <option value="250655" {% if profile.bank_code == "250655" %}selected{% endif %}>First National Bank (FNB)</option>
-                <option value="051001" {% if profile.bank_code == "051001" %}selected{% endif %}>Standard Bank</option>
-                <option value="198765" {% if profile.bank_code == "198765" %}selected{% endif %}>Nedbank</option>
-                <option value="678910" {% if profile.bank_code == "678910" %}selected{% endif %}>TymeBank</option>
-            </select>
-        </div>
-
-        <button class="m-2 btn btn-outline-primary">Save changes</button>
-
-        
-    </form>
-    <center>
-    <a href="{% url 'u_sure_u_wanna_delete_your_account' profile.user.id %}" ><button class="m-2 btn btn-outline-danger">Delete account <span class="opacity-50"><img src="{% static 'icons/delete.png' %}"></span></button></a> </center>
+<br><br><br><br><br>
 
 {% else %}
-    {% include 'partials/uyaphapha.html' %}
+  {% include 'partials/uyaphapha.html' %}
 {% endif %}
+  
 
-    <br><br>
-{% endblock %}
+<div class="site-footer">
+  <div class="container">
+    <div class="row">
+      
+      <!-- Contact Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Contact</h3>
+          <address>Polokwane, Moletjie</address>
+          <ul class="list-unstyled links">
+            <li><a target="_blank" href="tel://+27678558799">+27 67 855 8799</a></li>
+            <li><a target="_blank" href="tel://+27671389102">+27 67 138 9102</a></li>
+            <li><a target="_blank" href="mailto:darentals.saas@gmail.com">darentals.saas@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
 
-{% block footer %}{% endblock %}
+      <!-- Sources Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Sources</h3>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <!-- <li><a href="{% url 'people-with-rooms' %}">Landlords</a></li> -->
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'post-rental' %}">Post Rental</a></li>
+              <!-- <li><a href="{% url 'rented-rentals' %}">Rented Rentals</a></li> -->
+            {% endif %}
+            <li><a href="{% url 'rentals' %}">All Rentals</a></li>
+          </ul>
+          <ul class="list-unstyled float-start links">
+            <li><a href="{% url 'rooms' %}">Rooms</a></li>
+            <li><a href="{% url 'apartments' %}">Apartments</a></li>
+            <li><a href="{% url 'student-dorms' %}">Student Dorms</a></li>
+            <li><a href="{% url 'business-properties' %}">Business Properties</a></li>
+            {% if user.is_authenticated %}
+              <!-- <li><a href="{% url 'my-payments' %}">My Payments</a></li> -->
+              <!-- <li><a href="{% url 'subscribe' %}">Subscribe</a></li> -->
+              <!-- <li><a href="{% url 'subscription_page' %}">Go Premium</a></li> -->
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Links Column -->
+      <div class="col-lg-4">
+        <div class="widget">
+          <h3>Links</h3>
+          <ul class="list-unstyled links">
+            <li><a href="{% url 'terms-of-use' %}">Terms of Use</a></li>
+            <!-- <li><a href="{% url 'search' %}">Search</a></li> -->
+            <!-- <li><a href="{% url 'secret_656profiles' %}">Secret Profiles</a></li> -->
+             {% if not user.is_authenticated %}
+            <li><a href="{% url 'sign-up' %}">Sign Up</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% else %}
+            <li><a href="{% url 'u_sure_u_wanna_logout' %}">Logout</a></li>
+            {% endif %}
+          </ul>
+
+          <ul class="list-unstyled social">
+            <li><a target="_blank" href="https://www.instagram.com/darentals"><span class="icon-instagram"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-twitter"></span></a></li> -->
+            <li><a target="_blank" href="https://web.facebook.com/profile.php?id=61578741312506" target="_blank"><span class="icon-facebook"></span></a></li>
+            <!-- <li><a target="_blank" href="#"><span class="icon-linkedin"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-pinterest"></span></a></li>
+            <li><a target="_blank" href="#"><span class="icon-dribbble"></span></a></li> -->
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <p>
+          Copyright &copy;
+          <script>document.write(new Date().getFullYear());</script>
+          . All Rights Reserved. &mdash; Designed with love by
+          <a href="https://untree.co">Untree.co</a>
+        </p>
+        <div>
+          Distributed by
+          <a href="https://themewagon.com/" target="_blank">themewagon</a>
+        </div>
+        <div> <br>
+          Founded by Mphaki N.P
+        </div>
+        <div>
+          Developed by Mashamaite H.M
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+    <script src="{% static 'tf/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'tf/js/tiny-slider.js' %}"></script>
+    <script src="{% static 'tf/js/aos.js' %}"></script>
+    <script src="{% static 'tf/js/navbar.js' %}"></script>
+    <script src="{% static 'tf/js/counter.js' %}"></script>
+    <script src="{% static 'tf/js/custom.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css\bootstrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'fontawesome\css\all.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+	<title>Dashboard</title>
+</head>
+<body class="parksans">
+
+<!-- Hero Section with Background -->
+<div class="hero-bg">
+
+  <!-- Transparent Header -->
+  <header class="header shadow-sm">
+    <nav class="navbar navbar-expand-lg bg-transparent">
+      <div class="container-fluid">
+        <!-- Left -->
+        <div class="d-flex align-items-center">
+          <a href="#">
+            <img src="{% static 'imgs\react.svg' %}" alt="profile picture"
+              style="width: 3em; object-fit: cover; height: 3em;" class="rounded-circle" />
+          </a>
+          <a href="#" class="navbar-brand ms-2 text-dark fw-semibold">Admin Devman</a>
+        </div>
+
+        <!-- Toggler -->
+        <button class="navbar-toggler text-white" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Center Nav -->
+        <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
+          <div class="navbar-nav text-center">
+            <a href="#" class="nav-item nav-link text-dark">Home</a>
+            <a href="#" class="nav-item nav-link text-dark">Landlords</a>
+            <a href="#" class="nav-item nav-link text-dark">Available</a>
+            <a href="#" class="nav-item nav-link text-dark">Post</a>
+            <a href="#" class="nav-item nav-link text-dark">Dashboard</a>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="ms-auto">
+          <a href="#" class="nav-link text-success">Login</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Content -->
+
+<div class="container py-1 hero-secction" id="hero">
+  <div class="row min-vh-100 align-items-center flex-column-reverse flex-lg-row">
+    
+    <!-- Text (Vertically Centered) -->
+    <div class="col-lg-5 d-flex flex-column justify-content-center text-center text-lg-start">
+      <h1 class="display-1 fw-bold" id="hero-title">DaRentals</h1>
+      <p class="lead" id="hero-text">Rooms, business property, and apartments</p>
+      <a href="#" class="btn btn-success btn-lg col-6 mt-3">Get Started</a>
+    </div>
+    
+    <!-- Optional Image -->
+    <div class="col-lg-7 text-center">
+      <img src="{% static 'imgs\become-landlord.jpeg' %}" class="img-fluid" alt="Become a landlord">
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+	<footer class="bg-dark text-white pt-5 pb-4 mt-5">
+  <div class="container text-center text-md-start">
+    <div class="row">
+      <!-- Logo and Description -->
+      <div class="col-md-3 mb-4">
+        <h2 class="text-uppercase fw-bold mb-3" style="color: #128eff;">DaRentals</h2>
+        <p>
+          Find and rent your next home, office, or business space easily and securely. Connecting landlords with tenants across South Africa.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase fw-bold text-primary mb-3">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="{% url 'home-page' %}" class="text-white text-decoration-none">Home</a></li>
+          <li><a href="{% url 'availabe-rentals' %}" class="text-white text-decoration-none">Available Rentals</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'my-profile' user.username %}" class="text-white text-decoration-none">My Profile</a></li>
+          {% endif %}
+          <li><a href="{% url 'people-with-rooms' %}" class="text-white text-decoration-none">Browse Landlords</a></li>
+          <li><a href="{% url 'post-rental' %}" class="text-white text-decoration-none">Post a Rental</a></li>
+          <li><a href="{% url 'rented-rentals' %}" class="text-white text-decoration-none">Rented</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase fw-bold text-primary mb-3">Contact</h5>
+        <p><i class="fas fa-map-marker-alt me-2"></i> Polokwane, South Africa</p>
+        <p><i class="fas fa-phone me-2"></i><a href="tel:+27671389102" class="text-light text-decoration-none">+27 67 138 9102 (Founder)</a></p>
+        <p><i class="fas fa-phone me-2"></i><a href="tel:+27720727038" class="text-light text-decoration-none">+27 72 072 7038 (Developer)</a></p>
+        <p><i class="fas fa-envelope me-2"></i><a href="mailto:sudo.devman@gmail.com" class="text-light text-decoration-none">Click here to email developer</a></p>
+        <p><i class="fas fa-clock me-2"></i> Open wayawaya</p>
+      </div>
+
+      <!-- Social Media -->
+      <div class="col-md-3 mb-4">
+        <h5 class="text-uppercase fw-bold text-primary mb-3">Follow Us</h5>
+        <a href="https://web.facebook.com/people/Nkari-Patrick-Mphaki/61574461494123/?_rdc=1&_rdr#" target="_blank" class="text-white me-3">
+          <i class="fab fa-facebook fa-lg"></i>
+        </a>
+        <a href="https://www.instagram.com/dev_____man/" target="_blank" class="text-white me-3">
+          <i class="fab fa-twitter fa-lg"></i>
+        </a>
+        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
+        <a href="#" class="text-white me-3"><i class="fab fa-linkedin fa-lg"></i></a>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-auto">
+        <p class="text-center mb-0" style="font-size: 0.75rem;">
+          &copy; <span id="copy_year"></span> DaRentals | Founded by Nkari P. Mphaki | Built with ❤️ and ☕ by Hendrick M. Mashamaite
+        </p>
+        <script>
+          document.getElementById('copy_year').textContent = new Date().getFullYear();
+        </script>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
