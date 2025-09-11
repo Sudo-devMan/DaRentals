@@ -44,9 +44,9 @@ BULKSMS_API_SECRET = config("BULKSMS_API_SECRET")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["darentals-project.onrender.app", ".vercel.app", ".now.sh", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ['https://darentals-project.onrender.com' ,".onrender.app", ".vercel.app", ".now.sh", "127.0.0.1", "localhost"]
 
-CSRF_TRUSTED_ORIGINS = ['https://darentals-project.onrender.com', 'https://ebc5caaf904b.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://darentals-project.onrender.com']
 
 
 # Application definition
@@ -105,16 +105,10 @@ WSGI_APPLICATION = 'darentals_project.wsgi.application'
 #     }
 # }
 
-# PostgreSQL With Railway
+# PostgreSQL With Render
+DB_URL = config('DB_URL')
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'FvFOWftdHhxEFKFYnoTUMJbuxjHDAfOQ',
-        'HOST': 'postgres.railway.internal',
-        'PORT': '5432'
-    }
+    'default': dj_database_url.parse(DB_URL, conn_max_age=600, ssl_require=True)
 }
 # DATABASES['default']['PORT'] = 5432
 # if DATABASES['default'].get('PORT'):
@@ -166,4 +160,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
