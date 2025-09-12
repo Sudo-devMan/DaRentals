@@ -15,13 +15,13 @@ class Profile(models.Model):
     address = models.TextField(default="South Africa")
     phone_number = models.CharField(max_length=50, default="No number")
     date_modified = models.DateTimeField(auto_now=True)
-    account_number = models.CharField(max_length=15, default="NONE")
-    bank_code = models.CharField(max_length=10, default="NONE")
-    subaccount_code = models.CharField(max_length=100, default='NONE')
-    subscription_code = models.CharField(max_length=100, default='NONE')
-    is_premium = models.BooleanField(default=False)
-    rent_spendings = models.DecimalField(max_digits=100, decimal_places=2, default=0)
-    rent_earnings = models.DecimalField(max_digits=100, decimal_places=2, default=0)
+    # account_number = models.CharField(max_length=15, default="NONE")
+    # bank_code = models.CharField(max_length=10, default="NONE")
+    # subaccount_code = models.CharField(max_length=100, default='NONE')
+    # subscription_code = models.CharField(max_length=100, default='NONE')
+    # is_premium = models.BooleanField(default=False)
+    # rent_spendings = models.DecimalField(max_digits=100, decimal_places=2, default=0)
+    # rent_earnings = models.DecimalField(max_digits=100, decimal_places=2, default=0)
 
     def __str__(self):
         return f"{self.user.username} | Profile"

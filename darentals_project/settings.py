@@ -44,7 +44,7 @@ BULKSMS_API_SECRET = config("BULKSMS_API_SECRET")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://darentals-project.onrender.com' ,".onrender.app", ".vercel.app", ".now.sh", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ['https://darentals-project.onrender.com' ,"darentals-project.onrender.com" ,".onrender.app", ".vercel.app", ".now.sh", "127.0.0.1", "localhost"]
 
 CSRF_TRUSTED_ORIGINS = ['https://darentals-project.onrender.com']
 
@@ -160,5 +160,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
