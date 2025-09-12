@@ -45,10 +45,7 @@
         <div class="menu-bg-wrap">
           <div class="site-navigation">
             {% if user.is_authenticated %}
-            <a href="{% url 'home' %}" class="fs-sm-6 fs-xs-6 fs-md-5 logo m-0 float-start">DaRentals - 
-              <a href="{% url 'my-profile' user.username %}" class="logo mx-1 float-start">
-                {{user}} {% if user.profile.is_premium %}<a href="#plans" class="text-warning fw-bold">Premium</a>{% else %}<a href="{% url 'subscription_page' %}" class="text-warning fw-bold">Go Premium</a>{% endif %}
-              </a>
+            <a href="{% url 'home' %}" class="fs-sm-6 fs-xs-6 fs-md-5 logo m-0 float-start">DaRentals
             </a>
             {% else %}
             <a href="{% url 'home' %}" class="logo m-0 float-start">DaRentals</a>
