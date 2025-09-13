@@ -71,7 +71,7 @@ def post_rental(r):
 
         good_extentions = ['.png', '.jpeg', '.jpg']
 
-        if len(images) <= 5:
+        if len(images) <= 5 and len(images) > 0:
             rental.save()
             for image in images:
                 image_as_string = str(image)
@@ -89,7 +89,7 @@ def post_rental(r):
             messages.success(r, "Rental successfully posted!")
             return redirect('home')
         else:
-            messages.error(r, "Images should not be greater than 5.")
+            messages.error(r, "Image count should be between 5")
             return redirect('post-rental')
 
 
@@ -139,7 +139,7 @@ def edit_rental(r, id):
 
             good_extentions = ['.png', '.jpeg', '.jpg']
             # r.user.profile.is_premium ----- REPLACE TRUE WITH THIS
-            if len(images) > 0 and len(images) <= 5 and rental.images.all().count() < 5:
+            if len(images) > 0 and len(images) <= 5 and rental.images.all().count() <= 5:
                 if r.user.profile.is_premium:
                     for image in images:
                         image_as_string = str(image)
@@ -154,7 +154,7 @@ def edit_rental(r, id):
                     messages.success(r, "Rental successfully editted!")
                     return redirect('home')
                 else:
-                    if rental.images.all().count() >= 5:
+                    if rental.images.all().count() > 5:
                         messages.error(r, "You have a maximum of 5 image uploads")
                         return redirect(reverse('edit-rental', kwargs={'id': rental.id}))
                     else:
