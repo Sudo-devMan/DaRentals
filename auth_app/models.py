@@ -26,45 +26,45 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username} | Profile"
 
-    def save(self, *args, **kwargs):
-        if (
-            self.bank_code != "NONE" and
-            self.account_number != "NONE" and
-            self.subaccount_code == "NONE"
-        ):
-            subaccount = self.create_paystack_subaccount()
-            if subaccount:
-                self.subaccount_code = subaccount
-                send_mail(
-                    "DaRentals Account",
-                    "Your bank account has been set up successfully. You can now receive rent money from tenants!",
-                    "darentals@gmail.com",
-                    [self.user.email],  # send_mail needs list
-                    fail_silently=True
-                )
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if (
+    #         self.bank_code != "NONE" and
+    #         self.account_number != "NONE" and
+    #         self.subaccount_code == "NONE"
+    #     ):
+    #         subaccount = self.create_paystack_subaccount()
+    #         if subaccount:
+    #             self.subaccount_code = subaccount
+    #             send_mail(
+    #                 "DaRentals Account",
+    #                 "Your bank account has been set up successfully. You can now receive rent money from tenants!",
+    #                 "darentals@gmail.com",
+    #                 [self.user.email],  # send_mail needs list
+    #                 fail_silently=True
+    #             )
+    #     super().save(*args, **kwargs)
 
-    def create_paystack_subaccount(self):
-        url = "https://api.paystack.co/subaccount"
-        headers = {
-            "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
-            "Content-Type": "application/json",
-        }
-        data = {
-            "business_name": self.user.username,
-            "settlement_bank": self.bank_code,
-            "account_number": self.account_number,
-            "percentage_charge": 1.0,
-        }
+    # def create_paystack_subaccount(self):
+    #     url = "https://api.paystack.co/subaccount"
+    #     headers = {
+    #         "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+    #         "Content-Type": "application/json",
+    #     }
+    #     data = {
+    #         "business_name": self.user.username,
+    #         "settlement_bank": self.bank_code,
+    #         "account_number": self.account_number,
+    #         "percentage_charge": 1.0,
+    #     }
 
-        response = requests.post(url, headers=headers, json=data)
-        res_data = response.json()
-        print("Paystack Response:", res_data)
-        if res_data.get("status"):
-            return res_data["data"].get("subaccount_code")
-        return None
+    #     response = requests.post(url, headers=headers, json=data)
+    #     res_data = response.json()
+    #     print("Paystack Response:", res_data)
+    #     if res_data.get("status"):
+    #         return res_data["data"].get("subaccount_code")
+    #     return None
 
-    def delete_paystack_subaccount(self):
+    # def delete_paystack_subaccount(self):
         url = f"https://api.paystack.co/subaccount/{self.subaccount_code}"
         headers = {
             "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}"

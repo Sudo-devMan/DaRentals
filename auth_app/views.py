@@ -43,8 +43,8 @@ def edit_profile(r, username):
     l_user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=l_user)
     wegood = False
-    old_acc = profile.account_number
-    old_bank = profile.bank_code
+    # old_acc = profile.account_number
+    # old_bank = profile.bank_code
 
     if r.user.username == l_user.username:
         wegood = True
@@ -63,8 +63,8 @@ def edit_profile(r, username):
             profile.image.delete()
             profile.image = r.FILES.get('profile_image')
         profile.date_modified = datetime.now()
-        profile.account_number = r.POST.get('account_number')
-        profile.bank_code = r.POST.get('bank_code')
+        # profile.account_number = r.POST.get('account_number')
+        # profile.bank_code = r.POST.get('bank_code')
 
         # if profile.subaccount_code != "NONE":
         #     if old_acc != profile.account_number or old_bank != profile.bank_code:
