@@ -20,6 +20,10 @@ class SupabaseStorage(Storage):
             raise Exception(f"Supabase upload failed: {response['error']}")
         return name
 
+    def exists(self, name):
+        res = self.client.storage.from_(self.bucket).list(path=name)
+        return len(res) > 0
+
     def url(self, name):
         # Return public URL
         return f"{settings.SUPABASE_URL}/storage/v1/object/public/{self.bucket}/{name}"
