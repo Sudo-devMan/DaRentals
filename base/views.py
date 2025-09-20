@@ -7,6 +7,10 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponse
 
+def google_verification(request):
+    content = "google-site-verification: google1a87990a5547e88f.html"
+    return HttpResponse(content, content_type="text/html")
+
 def fluffhome(r):
     return render(r, 'noFluff/home.html')
 

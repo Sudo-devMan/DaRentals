@@ -25,6 +25,7 @@ urlpatterns = [
     path('terms-of-use', views.terms_of_use, name='terms-of-use'),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django-sitemap'),
+    path('google1a87990a5547e88f.html', views.google_verification),
      # extra space just in case
 
 ]
