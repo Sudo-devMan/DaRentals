@@ -15,12 +15,23 @@ class SupabaseStorage(Storage):
         # Convert Django file to bytes
         content.seek(0)
 
+        content_type = getattr(content, "content_type")
+
+        if not content_type:
+            import mimetypes
+            content_type, _ = mimetypes.guess_type(name)
+            if not content_type:
+                content_type = "application/octet-stream"
+
         # Upload to Supabase
         with tempfile.NamedTemporaryFile(delete=True) as tmp:
             tmp.write(content.read())
             tmp.flush()
-            self.client.storage.from_(self.bucket).upload(name, tmp.name)
-        response = self.client.storage.from_(self.bucket).upload(name, io.BytesIO(file_bytes))
+            self.client.storage.from_(self.bucket).upload(
+                path=name,
+                file=tmp.name,
+                file_options={"content-type": content_type})
+
         
         return name
 
