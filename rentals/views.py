@@ -140,7 +140,7 @@ def edit_rental(r, id):
             good_extentions = ['.png', '.jpeg', '.jpg']
             # r.user.profile.is_premium ----- REPLACE TRUE WITH THIS
             if len(images) > 0 and len(images) <= 5 and rental.images.all().count() <= 5:
-                if r.user.profile.is_premium:
+                if 10 > 78: # if user is premium (add the premium stuff at a later stage)
                     for image in images:
                         image_as_string = str(image)
                         if feca.check(image_as_string, good_extentions):
