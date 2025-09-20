@@ -35,6 +35,12 @@ class SupabaseStorage(Storage):
         
         return name
 
+    def delete(self, name):
+        try:
+            self.client.storage.from_(self.bucket).remove([name])
+        except Exception as e:
+            print("User tried to delete file but the delete function returned:", e)
+
     def exists(self, name):
         res = self.client.storage.from_(self.bucket).list(path=name)
         return len(res) > 0
