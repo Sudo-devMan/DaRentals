@@ -25,21 +25,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
 
-# API STUFF (Todo: hide all of them because a ke nyake dihacker di dlala ka tsona)
-TWILIO_ACCOUNT_SID = config("TWILIO_ACCOUNT_SID")
-TWILIO_AUTH_TOKEN = config("TWILIO_ACCOUNT_SID")
-TWILIO_PHONE_NUMBER = config("TWILIO_PHONE_NUMBER") # client gotta pay for south african twilio number
-
-PAYSTACK_PUBLIC_KEY = config("PAYSTACK_PUBLIC_KEY")
-PAYSTACK_SECRET_KEY = config("PAYSTACK_SECRET_KEY")
-PREMIUM_PRICE = 50
-
-BULKSMS_API_URL = config("BULKSMS_API_URL")
-BULKSMS_USERNAME = config("BULKSMS_USERNAME")
-BULKSMS_PASSWORD = config("BULKSMS_PASSWORD")
-BULKSMS_API_KEY = config("BULKSMS_API_KEY")
-BULKSMS_API_SECRET = config("BULKSMS_API_SECRET")
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
