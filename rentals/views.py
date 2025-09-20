@@ -228,8 +228,8 @@ def delete_rental(r, id):
 def rental_detail(r, id):
     rental = get_object_or_404(Rental, id=id)
     l_user = r.user.username
-    likes = RentalRating.objects.filter(liked=True).count()
-    dislikes = RentalRating.objects.filter(liked=False).count()
+    likes = RentalRating.objects.filter(liked=True, rental=rental).count()
+    dislikes = RentalRating.objects.filter(liked=False, rental=rental).count()
     user_rating = None
     if r.user.is_authenticated:
         user_rating = RentalRating.objects.filter(user=r.user, rental=rental).first()
