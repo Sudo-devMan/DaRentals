@@ -37,17 +37,17 @@ rental_urls = [
     path('rental/<int:rental_id>/<str:action>', rental_views.toggle_rating, name='toggle_rating'),
 ]
 
-payment_urls = [
-    path('', views.home, name='home'),
-    path('failed/<int:id>', payment_views.payment_failed, name='failed'),
-    path('success/<int:id>', payment_views.payment_successful, name='success'),
-    path('checkout/<int:id>', payment_views.create_paystack_checkout_session, name='checkout'),
-    path('webhook/paystack', payment_views.paystack_webhook), # go to paystack dashboard settings and paste "ngrokurl/mywebhookurl"
-    path('my-payments', payment_views.my_payments, name='my-payments'),
-    path('download/<payment_reference>', payment_views.download_receipt, name='download'),
-    path('subscribe/', payment_views.subscribe, name='subscribe'),  # Landing page starts checkout
-    path('subscription/', payment_views.subscription_page, name='subscription_page'),  # Post-payment landing]
-]
+# payment_urls = [
+#     path('', views.home, name='home'),
+#     path('failed/<int:id>', payment_views.payment_failed, name='failed'),
+#     path('success/<int:id>', payment_views.payment_successful, name='success'),
+#     path('checkout/<int:id>', payment_views.create_paystack_checkout_session, name='checkout'),
+#     path('webhook/paystack', payment_views.paystack_webhook), # go to paystack dashboard settings and paste "ngrokurl/mywebhookurl"
+#     path('my-payments', payment_views.my_payments, name='my-payments'),
+#     path('download/<payment_reference>', payment_views.download_receipt, name='download'),
+#     path('subscribe/', payment_views.subscribe, name='subscribe'),  # Landing page starts checkout
+#     path('subscription/', payment_views.subscription_page, name='subscription_page'),  # Post-payment landing]
+# ]
 
 # https://f0fe6325c4ed.ngrok-free.app/webhook/paystack
 # https://f0fe6325c4ed.ngrok-free.app

@@ -7,11 +7,14 @@ from django.conf import settings
 # from base.utils import create_subaccount
 import requests
 from django.core.mail import send_mail
+from base.storage_backends import SupabaseStorage
+
+supabase_storage = SupabaseStorage()
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
-    image = models.ImageField(upload_to='profiles', default='profiles/profile.png')
+    image = models.ImageField(storage=supabase_storage,upload_to='profiles', default='profiles/profile.png')
     address = models.TextField(default="South Africa")
     phone_number = models.CharField(max_length=50, default="No number")
     date_modified = models.DateTimeField(auto_now=True)

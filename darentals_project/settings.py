@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'base.base_middleware.FriendlyErrorMiddleware'
 ]
 
 ROOT_URLCONF = 'darentals_project.urls'
@@ -146,6 +147,10 @@ AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_ENDPOINT_URL = config("AWS_S3_ENDPOINT_URL")
+
+SUPABASE_URL = config("SUPABASE_URL")
+SUPABASE_KEY = config("SUPABASE_KEY")  # server-side key
+SUPABASE_BUCKET = config("AWS_STORAGE_BUCKET_NAME")  # your bucket name
 
 
 # Default primary key field type

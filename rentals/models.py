@@ -2,6 +2,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from base.storage_backends import SupabaseStorage
+
+supabase_storage = SupabaseStorage()
 
 class Rental(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -24,7 +27,7 @@ class Rental(models.Model):
         return f"{self.user.username} | {self.address}"
 
 class RentalImage(models.Model):
-    image = models.ImageField(upload_to='rentals', null=False, blank=False)
+    image = models.ImageField(storage=supabase_storage, upload_to='rentals', null=False, blank=False)
     rental = models.ForeignKey(Rental, on_delete=models.CASCADE, related_name="images", null=True)
 
     def __str__(self):
