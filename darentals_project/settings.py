@@ -138,7 +138,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_URL = f"{config("AWS_S3_ENDPOINT_URL")}/{config("AWS_STORAGE_BUCKET_NAME")}"
+MEDIA_URL = f"{config("AWS_S3_ENDPOINT_URL")}/{config("AWS_STORAGE_BUCKET_NAME")}/"
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
