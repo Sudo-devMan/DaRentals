@@ -3,21 +3,25 @@ from django.core.files.storage import Storage
 from supabase import create_client
 from django.conf import settings
 import io
+import tempfile
 
 class SupabaseStorage(Storage):
     def __init__(self):
         self.client = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
         self.bucket = settings.SUPABASE_BUCKET
 
+
     def _save(self, name, content):
         # Convert Django file to bytes
-        file_bytes = content.read()
+        content.seek(0)
 
         # Upload to Supabase
+        with tempfile.NamedTemporaryFile(delete=True) as tmp:
+            tmp.write(content.read())
+            tmp.flush()
+            self.client.storage.from_(self.bucket).upload(name, tmp.name)
         response = self.client.storage.from_(self.bucket).upload(name, io.BytesIO(file_bytes))
         
-        if response.get("error"):
-            raise Exception(f"Supabase upload failed: {response['error']}")
         return name
 
     def exists(self, name):
