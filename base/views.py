@@ -53,7 +53,7 @@ def home(r):
     rental_obj = None
 
     search_query = r.GET.get('search', '')
-    rentals_qs = Rental.objects.all().select_related('user', 'user__profile')[:10]
+    rentals_qs = Rental.objects.all().select_related('user', 'user__profile')
 
     rentals_list = []
 
@@ -75,7 +75,7 @@ def home(r):
             Q(price__icontains=search_query) |
             Q(user__username__icontains=search_query)
         )
-    rentals = rentals_qs.select_related('user', 'user__profile')
+    rentals = rentals_qs.select_related('user', 'user__profile')[:10]
 
 
     context = {
